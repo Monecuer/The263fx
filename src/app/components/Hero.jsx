@@ -1,9 +1,16 @@
 'use client';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import CountUp from 'react-countup';
 
-export default function Hero() {
+export default function Home() {
+  return (
+    <>
+      <Hero />
+    </>
+  );
+}
+
+function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden flex flex-col justify-center items-center bg-black">
 
@@ -22,26 +29,6 @@ export default function Hero() {
       {/* 🔳 Dark Overlay */}
       <div className="absolute inset-0 bg-black/60 z-10" />
 
-      {/* 📊 Animated Signal Bars */}
-      <div className="absolute inset-0 z-20 flex items-end justify-center gap-[2px] px-10 pointer-events-none">
-        {[...Array(50)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ height: 20 }}
-            animate={{ height: [20, 100, 40, 80, 20] }}
-            transition={{
-              duration: 2.5,
-              repeat: Infinity,
-              repeatType: 'mirror',
-              delay: i * 0.08,
-            }}
-            className={`w-[2px] rounded-sm ${
-              i % 2 === 0 ? 'bg-green-400' : 'bg-red-500'
-            }`}
-          />
-        ))}
-      </div>
-
       {/* 📝 Foreground Content */}
       <div className="relative z-30 text-center px-6 max-w-3xl">
         <motion.h1
@@ -50,7 +37,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          Stop Losing. Start Winning.
+          AGAIN NEVERTHELESS, I WIN
         </motion.h1>
 
         <motion.p
@@ -59,11 +46,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          ‘No BS’ Trading education responsible for{' '}
-          <span className="text-blue-400 font-bold">
-            <CountUp end={24000000} duration={4} prefix="$" separator="," />+
-          </span>{' '}
-          student success.
+          ‘No BS’ Trading education for serious traders worldwide.
         </motion.p>
 
         <motion.a
@@ -75,39 +58,16 @@ export default function Hero() {
         >
           Join The Academy
         </motion.a>
-
-        {/* 📊 Stats Moved BELOW Button */}
-        <motion.div
-          className="mt-10 flex flex-wrap justify-center gap-6 text-white font-medium text-lg"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-        >
-          <Stat label="Global Students" value={2000} suffix="+" />
-          <Stat label="Student Profits" value={6500000} prefix="$" />
-          <Stat label="Funding Raised" value={20000000} prefix="$" />
-        </motion.div>
       </div>
 
       {/* 🔗 Social Icons */}
       <footer className="relative z-30 mt-12 mb-6 flex justify-center space-x-6">
-        <SocialIcon href="https://twitter.com/jeafx" src="/icons/twitter.svg" alt="Twitter" />
-        <SocialIcon href="https://facebook.com/jeafx" src="/icons/facebook.svg" alt="Facebook" />
-        <SocialIcon href="https://youtube.com/jeafx" src="/icons/youtube.svg" alt="YouTube" />
-        <SocialIcon href="https://tiktok.com/@jeafx" src="/icons/tiktok.svg" alt="TikTok" />
+        <SocialIcon href="https://twitter.com/the263fx" src="/icons/twitter.svg" alt="Twitter" />
+        <SocialIcon href="https://facebook.com/the263fx" src="/icons/facebook.svg" alt="Facebook" />
+        <SocialIcon href="https://youtube.com/the263fx" src="/icons/youtube.svg" alt="YouTube" />
+        <SocialIcon href="https://tiktok.com/@the263fx" src="/icons/tiktok.svg" alt="TikTok" />
       </footer>
     </section>
-  );
-}
-
-function Stat({ label, value, prefix = '', suffix = '' }) {
-  return (
-    <div className="text-center">
-      <div className="text-2xl font-bold text-blue-400">
-        <CountUp end={value} duration={3} prefix={prefix} suffix={suffix} separator="," />
-      </div>
-      <div className="text-sm text-white">{label}</div>
-    </div>
   );
 }
 

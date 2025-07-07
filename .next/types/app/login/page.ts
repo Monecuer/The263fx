@@ -1,4 +1,4 @@
-// File: C:\Users\CHIMOMBE\Desktop\Elsha files\the263fx\src\app\login\page.jsx
+// File: C:\Users\LENOVO\OneDrive\Desktop\the263fx\The263fx\src\app\login\page.jsx
 import * as entry from '../../../../src/app/login/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
