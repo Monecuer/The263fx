@@ -9,12 +9,12 @@ export default function AIPopup() {
     {
       role: 'system',
       content:
-        'You are The263Fx AI assistant, expert in forex trading education based on The263Fx.',
+        'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers .',
     },
     {
       role: 'assistant',
       content:
-        'Hello! Ask me anything about forex trading and The263Fx methods.',
+        'Hello! Ask me anything about forex trading .',
     },
   ]);
   const [input, setInput] = useState('');
@@ -38,7 +38,7 @@ export default function AIPopup() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer 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`,
+          Authorization: `Bearer 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`,
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
@@ -57,7 +57,7 @@ export default function AIPopup() {
       console.error('AI error:', err);
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: '❌ AI failed. Please try again later.' },
+        { role: 'assistant', content: ' AI failed. Please try again later.' },
       ]);
     }
 
