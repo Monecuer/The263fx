@@ -3,20 +3,24 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabaseClient';
+import Link from 'next/link';
 import { FaUser, FaLock } from 'react-icons/fa';
 
 export function AuthForm({ type = 'login' }) {
   const router = useRouter();
   const isLogin = type === 'login';
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
+    setMessage(null);
     setLoading(true);
 
     if (!isLogin && password !== confirm) {
@@ -25,32 +29,52 @@ export function AuthForm({ type = 'login' }) {
       return;
     }
 
-    const { error } = isLogin
-      ? await supabase.auth.signInWithPassword({ email, password })
-      : await supabase.auth.signUp({ email, password });
+    try {
+      if (isLogin) {
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-    setLoading(false);
+        if (loginError) {
+          setError(loginError.message);
+        } else {
+          const isAdmin = email.toLowerCase() === 'the263fx@gmail.com';
+          router.push(isAdmin ? '/admin-dashboard' : '/dashboard');
+        }
+      } else {
+        const { error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+        });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      router.push(isLogin ? '/dashboard' : '/login');
+        if (signUpError) {
+          setError(signUpError.message);
+        } else {
+          setMessage('Sign up successful. Please check your email to verify your account.');
+          setTimeout(() => router.push('/login'), 3000);
+        }
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-blue-900 to-black text-white px-4">
-      <div className="relative w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-blue-900 to-black px-4 text-white">
+      <div className="relative w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
+        {/* Decorative bubbles */}
+        <div className="absolute -top-6 -left-6 w-24 h-24 bg-blue-500/30 rounded-full blur-2xl animate-pulse" />
+        <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-purple-500/20 rounded-full blur-2xl animate-ping" />
 
-        {/* Bubble glow effects */}
-        <div className="absolute -top-6 -left-6 w-24 h-24 bg-blue-500/30 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-purple-500/20 rounded-full blur-2xl animate-ping"></div>
-
-        <h2 className="text-3xl font-extrabold mb-6 text-center tracking-tight">
+        <h2 className="text-3xl font-bold mb-6 text-center">
           {isLogin ? 'Login' : 'Sign Up'}
         </h2>
 
         {error && <p className="mb-4 text-red-400 text-sm text-center">{error}</p>}
+        {message && <p className="mb-4 text-green-400 text-sm text-center">{message}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center bg-white/20 p-3 rounded-xl">
@@ -103,17 +127,17 @@ export function AuthForm({ type = 'login' }) {
         <p className="mt-5 text-center text-sm text-gray-300">
           {isLogin ? (
             <>
-              Don't have an account?{' '}
-              <a href="/signup" className="text-blue-400 hover:underline">
+              Don’t have an account?{' '}
+              <Link href="/signup" className="text-blue-400 hover:underline">
                 Sign Up
-              </a>
+              </Link>
             </>
           ) : (
             <>
               Already have an account?{' '}
-              <a href="/login" className="text-blue-400 hover:underline">
+              <Link href="/login" className="text-blue-400 hover:underline">
                 Login
-              </a>
+              </Link>
             </>
           )}
         </p>

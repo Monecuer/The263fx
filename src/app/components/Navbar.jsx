@@ -3,15 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import {
+  FaBars, FaTimes, FaHome, FaPenNib, FaGraduationCap,
+  FaChartLine, FaSignInAlt, FaUserPlus
+} from 'react-icons/fa';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-
-  const handleNavClick = () => setOpen(false); // Close menu when a link is clicked
+  const handleNavClick = () => setOpen(false);
 
   return (
-    <nav className="fixed w-full top-0 bg-black bg-opacity-80 backdrop-blur-md z-50 shadow-md">
+    <nav className="fixed w-full top-0 left-0 bg-black bg-opacity-80 backdrop-blur-md z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link
@@ -23,23 +25,31 @@ export default function Navbar() {
           <span>The263Fx</span>
         </Link>
 
-        {/* Desktop Links */}
+        {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-6 text-sm text-white">
-          <Link href="/" className="hover:text-blue-400">Home</Link>
-          <Link href="/blog" className="hover:text-blue-400">Blog</Link>
-          <Link href="/results" className="hover:text-blue-400">Results</Link>
-          <Link href="/academy" className="hover:text-blue-400">Academy</Link>
+          <Link href="/" className="hover:text-blue-400 flex items-center gap-1">
+            <FaHome /> Home
+          </Link>
+          <Link href="/blog" className="hover:text-blue-400 flex items-center gap-1">
+            <FaPenNib /> Blog
+          </Link>
+          <Link href="/results" className="hover:text-blue-400 flex items-center gap-1">
+            <FaChartLine /> Results
+          </Link>
+          <Link href="/academy" className="hover:text-blue-400 flex items-center gap-1">
+            <FaGraduationCap /> Academy
+          </Link>
           <Link
             href="/login"
-            className="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded transition"
+            className="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded transition flex items-center gap-1"
           >
-            Log In
+            <FaSignInAlt /> Log In
           </Link>
           <Link
             href="/signup"
-            className="border border-white hover:border-blue-400 hover:text-blue-400 px-4 py-1 rounded transition"
+            className="border border-white hover:border-blue-400 hover:text-blue-400 px-4 py-1 rounded transition flex items-center gap-1"
           >
-            Sign Up
+            <FaUserPlus /> Sign Up
           </Link>
         </div>
 
@@ -55,27 +65,51 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-black bg-opacity-95 text-white px-6 py-4 space-y-4 transform transition-transform duration-300 ${
-          open ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
+        className={`md:hidden absolute top-full left-0 w-full bg-black bg-opacity-95 text-white px-6 py-4 space-y-4 transition-all duration-300 ${
+          open ? 'block' : 'hidden'
         }`}
       >
-        <Link href="/" onClick={handleNavClick} className="block hover:text-blue-400">Home</Link>
-        <Link href="/blog" onClick={handleNavClick} className="block hover:text-blue-400">Blog</Link>
-        <Link href="/results" onClick={handleNavClick} className="block hover:text-blue-400">Results</Link>
-        <Link href="/academy" onClick={handleNavClick} className="block hover:text-blue-400">Academy</Link>
+        <Link
+          href="/"
+          onClick={handleNavClick}
+          className="flex items-center gap-2 hover:text-blue-400"
+        >
+          <FaHome /> Home
+        </Link>
+        <Link
+          href="/blog"
+          onClick={handleNavClick}
+          className="flex items-center gap-2 hover:text-blue-400"
+        >
+          <FaPenNib /> Blog
+        </Link>
+        <Link
+          href="/results"
+          onClick={handleNavClick}
+          className="flex items-center gap-2 hover:text-blue-400"
+        >
+          <FaChartLine /> Results
+        </Link>
+        <Link
+          href="/academy"
+          onClick={handleNavClick}
+          className="flex items-center gap-2 hover:text-blue-400"
+        >
+          <FaGraduationCap /> Academy
+        </Link>
         <Link
           href="/login"
           onClick={handleNavClick}
-          className="block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-center"
+          className="block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-center flex items-center justify-center gap-2"
         >
-          Log In
+          <FaSignInAlt /> Log In
         </Link>
         <Link
           href="/signup"
           onClick={handleNavClick}
-          className="block border border-white hover:border-blue-400 hover:text-blue-400 px-4 py-2 rounded text-center"
+          className="block border border-white hover:border-blue-400 hover:text-blue-400 px-4 py-2 rounded text-center flex items-center justify-center gap-2"
         >
-          Sign Up
+          <FaUserPlus /> Sign Up
         </Link>
       </div>
     </nav>
