@@ -1,11 +1,5 @@
 {
-  "/_not-found": "app/_not-found.js",
-  "/academy/page": "app/academy/page.js",
-  "/components/payment/page": "app/components/payment/page.js",
-  "/blog/page": "app/blog/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/login/page": "app/login/page.js",
+  "/not-found": "app/not-found.js",
   "/page": "app/page.js",
-  "/signup/page": "app/signup/page.js",
-  "/results/page": "app/results/page.js"
+  "/login/page": "app/login/page.js"
 }
