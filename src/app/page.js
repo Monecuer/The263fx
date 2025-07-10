@@ -9,6 +9,7 @@ import Testimonials from './components/Testimonials';
 import Results from './components/Results';
 import Footer from './components/Footer';
 import AIPopup from './components/AIPopup';
+import WhatsappSupport from './components/WhatsappSupport';
 
 export default function Home() {
   return (
