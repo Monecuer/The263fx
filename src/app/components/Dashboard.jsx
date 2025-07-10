@@ -482,7 +482,7 @@ const [bio, setBio] = useState('');
 
       {/* Worldwide Payment Icons */}
       <section>
-        <h2 className="text-xl font-semibold mb-3 text-gray-300">Payments Worldwide</h2>
+        <h2 className="text-xl font-semibold mb-3 text-gray-300">Payment to be used now</h2>
         <div className="flex flex-wrap justify-center gap-8 text-gray-300 hover:text-white cursor-pointer select-none">
           {/* Add links or onClick handlers if needed */}
         
