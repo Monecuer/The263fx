@@ -196,7 +196,7 @@ export default function CoursesSection() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-         After payment, you'll  mentorship, and exclusive content.
+         After payment, you'll get mentorship, and exclusive content.
       </motion.p>
 
       {selectedCourse && (
