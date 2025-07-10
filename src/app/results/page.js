@@ -18,7 +18,7 @@ export default function Results() {
           </div>
           <div>
             <h3 className="text-5xl font-bold text-yellow-400">
-              <CountUp end={24} duration={3} prefix="$" separator="," />
+              <CountUp end={240} duration={3} prefix="$" separator="," />K
             </h3>
             <p className="mt-2 text-gray-300">Total Profits Shared</p>
           </div>
