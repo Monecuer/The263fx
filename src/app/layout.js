@@ -1,4 +1,6 @@
 import './globals.css';
+import WhatsAppButton from '../components/WhatsappSupport';
+import AIChatbotButton from '../components/AIPopup';
 
 export const metadata = {
   title: 'The263fx - Trading Academy',
