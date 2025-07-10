@@ -13,7 +13,6 @@ import {
 } from 'react-icons/fa';
 
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
 export default function DashboardPage() {
   const router = useRouter();
