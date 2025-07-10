@@ -1,17 +1,21 @@
-// src/components/WhatsappSupport.jsx
-import React from 'react';
-import { FaWhatsapp } from 'react-icons/fa';
+'use client';
 
-export default function WhatsappSupport() {
+export default function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/263775007225"
+      href="https://wa.me/263782286544"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
-      aria-label="Chat with us on WhatsApp"
+      className="fixed bottom-5 right-5 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition duration-300"
+      aria-label="Contact via WhatsApp"
     >
-      <FaWhatsapp size={28} />
+      <svg
+        className="w-6 h-6"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M20.52 3.48A11.83 11.83 0 0012 0C5.37 0 0 5.37 0 12c0 2.09.54 4.06 1.57 5.81L0 24l6.28-1.64A11.86 11.86 0 0012 24c6.63 0 12-5.37 12-12 0-3.19-1.25-6.18-3.48-8.52zM12 22.02a9.96 9.96 0 01-5.08-1.41l-.36-.21-3.73.97.99-3.64-.23-.37a9.97 9.97 0 1116.35-2.79A9.95 9.95 0 0112 22.02zm5.41-7.34c-.29-.15-1.71-.84-1.98-.94-.27-.1-.47-.15-.67.15-.2.29-.77.94-.95 1.14-.17.2-.35.22-.65.07-.29-.15-1.23-.45-2.35-1.44-.87-.77-1.46-1.73-1.63-2.02-.17-.29-.02-.45.13-.6.13-.14.29-.37.43-.55.14-.17.18-.29.27-.48.09-.19.04-.36-.02-.51-.06-.14-.67-1.62-.92-2.21-.24-.57-.48-.49-.67-.5h-.57c-.2 0-.51.07-.77.36s-1.01.99-1.01 2.42 1.03 2.81 1.18 3.01c.15.2 2.02 3.09 4.89 4.33.68.29 1.21.46 1.62.59.68.22 1.3.19 1.79.12.55-.08 1.71-.7 1.95-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.36z"/>
+      </svg>
     </a>
   );
 }
