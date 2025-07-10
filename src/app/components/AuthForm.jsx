@@ -31,11 +31,7 @@ export function AuthForm({ type = 'login' }) {
 
     try {
       if (isLogin) {
-        const { error: loginError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
+        const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
         if (loginError) {
           setError(loginError.message);
         } else {
@@ -43,18 +39,13 @@ export function AuthForm({ type = 'login' }) {
           router.push(isAdmin ? '/admin-dashboard' : '/dashboard');
         }
       } else {
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-
+        const { error: signUpError } = await supabase.auth.signUp({ email, password });
         if (signUpError) {
           setError(signUpError.message);
         } else {
-          setMessage('Sign up successful! Redirecting...');
-          // ✅ Redirect after short delay
+          setMessage('Sign up successful! Please login.');
           setTimeout(() => {
-            router.push('/profile-setup');
+            router.push('/login');
           }, 2000);
         }
       }
@@ -68,7 +59,6 @@ export function AuthForm({ type = 'login' }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-blue-900 to-black px-4 text-white">
       <div className="relative w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
-        {/* Decorative bubbles */}
         <div className="absolute -top-6 -left-6 w-24 h-24 bg-blue-500/30 rounded-full blur-2xl animate-pulse" />
         <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-purple-500/20 rounded-full blur-2xl animate-ping" />
 

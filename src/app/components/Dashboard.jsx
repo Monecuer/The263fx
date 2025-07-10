@@ -13,7 +13,6 @@ import {
 } from 'react-icons/fa';
 
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -24,6 +23,62 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [binanceQr, setBinanceQr] = useState('');
+const [profile, setProfile] = useState(null);
+const [editingProfile, setEditingProfile] = useState(false);
+const [saving, setSaving] = useState(false);
+const [name, setName] = useState('');
+const [bio, setBio] = useState('');
+
+<section className="bg-gray-800 p-6 rounded-xl mb-8">
+  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+    <FaUserCircle /> Your Profile
+  </h2>
+
+  {!editingProfile ? (
+    <div className="space-y-2 text-white">
+      <p><strong>Name:</strong> {profile?.name || 'Not set'}</p>
+      <p><strong>Bio:</strong> {profile?.bio || 'No bio provided'}</p>
+      <button
+        onClick={() => setEditingProfile(true)}
+        className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+      >
+        Edit Your Profile
+      </button>
+    </div>
+  ) : (
+    <div className="space-y-4">
+      <input
+        type="text"
+        placeholder="Your name"
+        className="w-full p-2 rounded bg-white/10 border border-gray-600 text-white"
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+      <textarea
+        placeholder="Your bio"
+        className="w-full p-2 rounded bg-white/10 border border-gray-600 text-white"
+        value={bio}
+        onChange={e => setBio(e.target.value)}
+      />
+      <div className="flex gap-4">
+        <button
+          onClick={saveProfile}
+          disabled={saving}
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+        >
+          {saving ? 'Saving...' : 'Save'}
+        </button>
+        <button
+          onClick={() => setEditingProfile(false)}
+          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  )}
+</section>
+
 
   useEffect(() => {
     async function init() {
@@ -204,7 +259,13 @@ export default function DashboardPage() {
   <h1 className="flex items-center gap-2 text-3xl font-bold text-blue-400">
     <FaUserCircle /> Hello, {user.email.split('@')[0]}
   </h1>
-  <div className="flex gap-4">
+   <div className="flex gap-4 flex-wrap">
+    <a
+      href="/profile-setup"
+      className="btn-primary bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded flex items-center gap-2"
+    >
+      <FaUserCircle /> Edit Profile
+    </a>
     <a
       href="/academy"
       className="btn-secondary bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded flex items-center gap-2"
@@ -221,6 +282,7 @@ export default function DashboardPage() {
       <FaSignOutAlt /> Logout
     </button>
   </div>
+
 </header>
 
 
@@ -423,16 +485,9 @@ export default function DashboardPage() {
         <h2 className="text-xl font-semibold mb-3 text-gray-300">Payments Worldwide</h2>
         <div className="flex flex-wrap justify-center gap-8 text-gray-300 hover:text-white cursor-pointer select-none">
           {/* Add links or onClick handlers if needed */}
-          <FaStripe size={40} title="Stripe" className="hover:text-indigo-400 transition" />
-          <FaPaypal size={40} title="Paypal" className="hover:text-blue-500 transition" />
+        
           <FaBitcoin size={40} title="Bitcoin" className="hover:text-yellow-400 transition" />
-          <FaCcVisa size={40} title="Visa" className="hover:text-blue-600 transition" />
-          <FaCcMastercard size={40} title="Mastercard" className="hover:text-red-600 transition" />
-          <FaCcAmex size={40} title="American Express" className="hover:text-blue-700 transition" />
-          <FaGooglePay size={40} title="Google Pay" className="hover:text-green-600 transition" />
-          <FaApplePay size={40} title="Apple Pay" className="hover:text-gray-300 transition" />
-          <FaMoneyBillWave size={40} title="MoneyWave" className="hover:text-green-700 transition" />
-          <FaMoneyCheckAlt size={40} title="Money Check" className="hover:text-blue-700 transition" />
+          
           {/* Add Binance or Flutterwave icon as svg or custom if you want */}
         </div>
       </section>
