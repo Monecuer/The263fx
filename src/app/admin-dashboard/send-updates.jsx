@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../app/lib/supabaseClient';
+import { supabase } from '../lib/supabaseClient';
 export default function SendUpdates() {
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
