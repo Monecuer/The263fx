@@ -63,7 +63,7 @@ export default function CoursesSection() {
       ) : (
         <div className="aspect-video mt-4 rounded-lg overflow-hidden border border-gray-700">
           <div className="w-full h-full bg-black flex items-center justify-center text-gray-600 text-sm italic">
-            📺 Free Course Video Coming Soon
+              Free Course Video Coming Soon
           </div>
         </div>
       ),
@@ -196,7 +196,7 @@ export default function CoursesSection() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        ✅ After payment, you'll get full dashboard access, mentorship, and exclusive content.
+         After payment, you'll  mentorship, and exclusive content.
       </motion.p>
 
       {selectedCourse && (
