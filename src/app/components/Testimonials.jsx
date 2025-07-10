@@ -29,7 +29,7 @@ export default function Testimonials() {
             <ul className="text-gray-300 list-disc pl-6 space-y-1">
               <li>Copy Trading</li>
               <li>Signals</li>
-              <li>Account Management</li>
+            
             </ul>
           </div>
 
