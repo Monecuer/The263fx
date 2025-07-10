@@ -1,5 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '../lib/supabaseClient';
+import PaymentModal from '../components/PaymentModal';
 import { motion } from 'framer-motion';
 import {
   FaPlayCircle,
@@ -7,27 +11,41 @@ import {
   FaCreditCard,
   FaChalkboardTeacher,
   FaClock,
-  FaCheckCircle,
   FaUserGraduate,
   FaBrain,
   FaStar,
 } from 'react-icons/fa';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function CoursesSection() {
-  const [showVideo, setShowVideo] = useState(false);
   const router = useRouter();
+  const [showVideo, setShowVideo] = useState(false);
+  const [user, setUser] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
-  const handleJoin = () => router.push('/login');
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+  }, []);
+
+  const handleJoin = (course) => {
+    if (!user) {
+      router.push('/login');
+    } else {
+      setSelectedCourse(course);
+    }
+  };
 
   const courses = [
     {
+      id: 'free-course',
       title: 'Free Course',
       icon: <FaChalkboardTeacher className="text-blue-400 text-xl" />,
       badge: 'FREE',
       time: '[8/7/2025 10:32]',
-      price: 'Free',
+      price: 0,
+      priceLabel: 'Free',
+      duration: null,
       color: 'bg-white/5',
       border: 'border-white/10',
       features: [
@@ -35,28 +53,28 @@ export default function CoursesSection() {
         'How trading benefits you',
         'Why people lose money',
       ],
-      action: (
-        !showVideo ? (
-          <button
-            onClick={() => setShowVideo(true)}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
-          >
-            <FaPlayCircle className="text-lg" /> Join Now
-          </button>
-        ) : (
-          <div className="aspect-video mt-4 rounded-lg overflow-hidden border border-gray-700">
-            <div className="w-full h-full bg-black flex items-center justify-center text-gray-600 text-sm italic">
-              📺 Free Course Video Coming Soon
-            </div>
+      action: !showVideo ? (
+        <button
+          onClick={() => setShowVideo(true)}
+          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+        >
+          <FaPlayCircle className="text-lg" /> Join Now
+        </button>
+      ) : (
+        <div className="aspect-video mt-4 rounded-lg overflow-hidden border border-gray-700">
+          <div className="w-full h-full bg-black flex items-center justify-center text-gray-600 text-sm italic">
+            📺 Free Course Video Coming Soon
           </div>
-        )
+        </div>
       ),
     },
     {
+      id: 'premium-1mo',
       title: '1-Month Premium',
       icon: <FaUserGraduate className="text-yellow-400 text-xl" />,
       badge: '20% OFF',
-      price: '$48 (Was $60)',
+      price: 48,
+      priceLabel: '$48 (Was $60)',
       duration: '1 Month',
       color: 'bg-white/5',
       border: 'border-yellow-400/20',
@@ -67,20 +85,14 @@ export default function CoursesSection() {
         'Open Account & Demo',
         'Trade Real Account',
       ],
-      action: (
-        <button
-          onClick={handleJoin}
-          className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-black w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
-        >
-          <FaCreditCard className="text-lg" /> Enroll Now
-        </button>
-      ),
     },
     {
+      id: 'mastery-3mo',
       title: '3-Month Mastery',
       icon: <FaBrain className="text-purple-400 text-xl" />,
       badge: '36% OFF',
-      price: '$96 (Was $150)',
+      price: 96,
+      priceLabel: '$96 (Was $150)',
       duration: '3 Months',
       color: 'bg-white/5',
       border: 'border-purple-400/20',
@@ -92,20 +104,14 @@ export default function CoursesSection() {
         'Trade with Us',
         'Prop Firm Trading',
       ],
-      action: (
-        <button
-          onClick={handleJoin}
-          className="mt-4 bg-purple-500 hover:bg-purple-600 text-white w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
-        >
-          <FaLock className="text-lg" /> Unlock Full Access
-        </button>
-      ),
     },
     {
+      id: 'elite-lifetime',
       title: 'Lifetime Elite Access',
       icon: <FaStar className="text-yellow-500 text-xl" />,
       badge: '50% OFF',
-      price: '$375 (Was $750)',
+      price: 375,
+      priceLabel: '$375 (Was $750)',
       duration: 'Lifetime',
       color: 'bg-white/5',
       border: 'border-yellow-500/20',
@@ -116,14 +122,6 @@ export default function CoursesSection() {
         'Become a Pro',
         'Get Funded $10K',
       ],
-      action: (
-        <button
-          onClick={handleJoin}
-          className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
-        >
-          <FaCreditCard className="text-lg" /> Join Lifetime Plan
-        </button>
-      ),
     },
   ];
 
@@ -150,7 +148,7 @@ export default function CoursesSection() {
       <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
         {courses.map((course, i) => (
           <motion.div
-            key={i}
+            key={course.id}
             className={`${course.color} ${course.border} p-6 rounded-2xl shadow-lg backdrop-blur-md space-y-4`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -163,7 +161,7 @@ export default function CoursesSection() {
                 {course.badge}
               </span>
             </div>
-            <p className="text-gray-400 text-sm italic">{course.price}</p>
+            <p className="text-gray-400 text-sm italic">{course.priceLabel}</p>
 
             <ul className="text-gray-300 text-sm space-y-1 pl-4 list-disc">
               {course.features.map((f, idx) => (
@@ -178,7 +176,16 @@ export default function CoursesSection() {
               </div>
             )}
 
-            {course.action}
+            {course.id === 'free-course' ? (
+              course.action
+            ) : (
+              <button
+                onClick={() => handleJoin(course)}
+                className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-black w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+              >
+                <FaCreditCard className="text-lg" /> Enroll Now
+              </button>
+            )}
           </motion.div>
         ))}
       </div>
@@ -191,6 +198,13 @@ export default function CoursesSection() {
       >
         ✅ After payment, you'll get full dashboard access, mentorship, and exclusive content.
       </motion.p>
+
+      {selectedCourse && (
+        <PaymentModal
+          course={selectedCourse}
+          onCancel={() => setSelectedCourse(null)}
+        />
+      )}
     </section>
   );
 }

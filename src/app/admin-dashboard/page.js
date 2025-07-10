@@ -1,121 +1,99 @@
-'use client';
+'use client'; // ✅ This must be the first line
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabaseClient';
-import {
-  FaUserShield,
-  FaSignOutAlt,
-  FaUsers,
-  FaMoneyCheckAlt,
-  FaEnvelope,
-} from 'react-icons/fa';
 
 export default function AdminDashboard() {
-  const [admin, setAdmin] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [payments, setPayments] = useState([]);
-  const router = useRouter();
+  const [userCount, setUserCount] = useState(0);
+  const [recentUsers, setRecentUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  async function fetchAdminData() {
+    try {
+      const { data: latest, error: latestErr } = await supabase
+        .from('profiles')
+        .select('id,email,full_name,created_at')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      const { count, error: countErr } = await supabase
+        .from('profiles')
+        .select('id', { count: 'exact', head: true });
+
+      if (latestErr || countErr) {
+        throw new Error((latestErr || countErr).message);
+      }
+
+      return { count: count ?? 0, latest };
+    } catch (err) {
+      console.error('Supabase fetch error:', err.message);
+      throw err;
+    }
+  }
 
   useEffect(() => {
-    async function fetchAdminData() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user || user.email !== 'the263fx@gmail.com') {
-        router.push('/login');
-      } else {
-        setAdmin(user);
-
-        // Fetch registered users
-        const { data: userData } = await supabase.from('profiles').select('id, email, full_name, created_at');
-        setUsers(userData || []);
-
-        // Fetch paid users
-        const { data: paymentData } = await supabase.from('payments').select('*').eq('status', 'paid');
-        setPayments(paymentData || []);
+    const getData = async () => {
+      try {
+        const { count, latest } = await fetchAdminData();
+        setUserCount(count);
+        setRecentUsers(latest);
+      } catch {
+        setError('⚠️ Could not load user data.');
+      } finally {
+        setLoading(false);
       }
-    }
-    fetchAdminData();
-  }, [router]);
+    };
+    getData();
+  }, []);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
-  };
+  if (loading) {
+    return <div className="p-6 text-white bg-gray-900">🔄 Loading dashboard...</div>;
+  }
 
-  if (!admin) {
+  if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        Loading admin dashboard...
+      <div className="p-6 bg-gray-900 text-white">
+        <p className="text-red-500">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold flex items-center gap-2 text-blue-400">
-          <FaUserShield /> Admin Dashboard
-        </h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded flex items-center gap-2"
-        >
-          <FaSignOutAlt /> Logout
-        </button>
-      </header>
+    <div className="p-6 min-h-screen bg-gray-900 text-white">
+      <h1 className="text-4xl font-bold mb-8">🛠️ Admin Dashboard</h1>
 
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gray-800 p-6 rounded shadow flex items-center gap-4">
-          <FaUsers className="text-3xl text-green-400" />
-          <div>
-            <h2 className="text-lg font-semibold">Total Users</h2>
-            <p className="text-xl font-bold">{users.length}</p>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="p-6 bg-gray-800 rounded-lg shadow">
+          <h2 className="text-2xl font-semibold mb-4">👥 Total Users</h2>
+          <p className="text-5xl font-bold text-green-400">{userCount}</p>
         </div>
-        <div className="bg-gray-800 p-6 rounded shadow flex items-center gap-4">
-          <FaMoneyCheckAlt className="text-3xl text-yellow-400" />
-          <div>
-            <h2 className="text-lg font-semibold">Total Paid</h2>
-            <p className="text-xl font-bold">{payments.length}</p>
-          </div>
-        </div>
-        <div className="bg-gray-800 p-6 rounded shadow flex items-center gap-4">
-          <FaEnvelope className="text-3xl text-blue-400" />
-          <div>
-            <h2 className="text-lg font-semibold">Send Bulk Emails</h2>
-            <button
-              onClick={() => router.push('/admin-dashboard/send-updates')}
-              className="mt-1 bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm"
-            >
-              Compose
-            </button>
-          </div>
-        </div>
-      </section>
 
-      <section>
-        <h2 className="text-2xl font-bold mb-4">Registered Users</h2>
-        <div className="overflow-auto bg-gray-800 rounded shadow">
-          <table className="w-full table-auto text-sm">
-            <thead>
-              <tr className="bg-gray-700 text-left">
-                <th className="p-3">Email</th>
-                <th className="p-3">Full Name</th>
-                <th className="p-3">Joined</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((u, i) => (
-                <tr key={i} className="border-t border-gray-700">
-                  <td className="p-3">{u.email}</td>
-                  <td className="p-3">{u.full_name || '-'}</td>
-                  <td className="p-3">{new Date(u.created_at).toLocaleDateString()}</td>
-                </tr>
+        <div className="p-6 bg-gray-800 rounded-lg shadow">
+          <h2 className="text-2xl font-semibold mb-4">🕒 Recent Signups</h2>
+          {recentUsers.length === 0 ? (
+            <p>No recent users</p>
+          ) : (
+            <ul className="space-y-2">
+              {recentUsers.map((u) => (
+                <li key={u.id} className="flex justify-between">
+                  <span>{u.full_name || u.email}</span>
+                  <span className="text-sm text-gray-400">
+                    {new Date(u.created_at).toLocaleDateString()}
+                  </span>
+                </li>
               ))}
-            </tbody>
-          </table>
+            </ul>
+          )}
         </div>
-      </section>
+      </div>
+
+      <div className="p-6 bg-gray-800 rounded-lg shadow">
+        <h2 className="text-2xl font-semibold mb-4">🔔 Send Notifications</h2>
+        <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+          Send Email to All Users
+        </button>
+      </div>
     </div>
   );
 }

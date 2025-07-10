@@ -51,8 +51,11 @@ export function AuthForm({ type = 'login' }) {
         if (signUpError) {
           setError(signUpError.message);
         } else {
-          setMessage('Sign up successful. Please check your email to verify your account.');
-          setTimeout(() => router.push('/login'), 3000);
+          setMessage('Sign up successful! Redirecting...');
+          // ✅ Redirect after short delay
+          setTimeout(() => {
+            router.push('/profile-setup');
+          }, 2000);
         }
       }
     } catch (err) {

@@ -1,50 +1,53 @@
 'use client';
-import { motion } from 'framer-motion';
+
+import Image from 'next/image';
+import CountUp from 'react-countup';
 
 export default function Results() {
   return (
-    <section className="min-h-screen bg-black text-white py-20 px-6 text-center">
-      <motion.h1
-        className="text-4xl md:text-5xl font-extrabold"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        Our Student Results
-      </motion.h1>
-      <p className="mt-4 text-lg text-gray-300 max-w-xl mx-auto">
-        The263fx has helped traders worldwide achieve funding and real profits. Here's a glimpse of the success.
-      </p>
+    <div className="min-h-screen flex flex-col justify-between bg-gray-900 text-gray-400">
+      {/* Animated Stats Section */}
+      <section className="py-20 px-6 text-center bg-gray-950 text-white">
+        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-blue-400">Our Trading Results</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-5xl mx-auto">
+          <div>
+            <h3 className="text-5xl font-bold text-green-400">
+              <CountUp end={100} duration={3} />+
+            </h3>
+            <p className="mt-2 text-gray-300">Profitable Traders</p>
+          </div>
+          <div>
+            <h3 className="text-5xl font-bold text-yellow-400">
+              <CountUp end={24} duration={3} prefix="$" separator="," />
+            </h3>
+            <p className="mt-2 text-gray-300">Total Profits Shared</p>
+          </div>
+          <div>
+            <h3 className="text-5xl font-bold text-purple-400">
+              <CountUp end={30} duration={3} />+
+            </h3>
+            <p className="mt-2 text-gray-300">Countries Served</p>
+          </div>
+        </div>
+      </section>
 
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-        {stats.map((item, i) => (
-          <motion.div
-            key={item.label}
-            className="bg-white/5 rounded-xl border border-white/10 p-6 shadow-md"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 + i * 0.2 }}
-          >
-            <h2 className="text-4xl font-bold text-blue-400">{item.value}</h2>
-            <p className="mt-2 text-gray-300">{item.label}</p>
-          </motion.div>
-        ))}
-      </div>
-
-      <motion.p
-        className="mt-20 text-sm italic text-gray-400"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-      >
-        Results are real. You can be next.
-      </motion.p>
-    </section>
+      {/* Footer */}
+      <footer className="w-full py-6 text-center border-t border-gray-700 mt-10">
+        <div className="flex justify-center space-x-6">
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <Image src="/icons/twitter.svg" alt="Twitter" width={24} height={24} />
+          </a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <Image src="/icons/facebook.svg" alt="Facebook" width={24} height={24} />
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <Image src="/icons/youtube.svg" alt="YouTube" width={24} height={24} />
+          </a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <Image src="/icons/tiktok.svg" alt="TikTok" width={24} height={24} />
+          </a>
+        </div>
+      </footer>
+    </div>
   );
 }
-
-const stats = [
-  { label: 'Total Student Funding', value: '$24M+' },
-  { label: 'Students Mentored Globally', value: '2,000+' },
-  { label: 'Documented Profits', value: '$6.5M+' },
-];

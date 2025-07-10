@@ -46,7 +46,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          ‘No BS’ Trading education for serious traders worldwide.
+         Yesterday’s gone—but today’s wisdom fuels tomorrow’s wins. You can’t hit rewind, but you can level up now and step into a stronger, smarter future.
         </motion.p>
 
         <motion.a

@@ -11,10 +11,7 @@ import {
   FaStripe, FaBitcoin, FaPaypal, FaCcVisa, FaCcMastercard,
   FaCcAmex, FaGooglePay, FaApplePay, FaMoneyBillWave, FaMoneyCheckAlt
 } from 'react-icons/fa';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import FlutterwaveButton from 'flutterwave-react-v3';
-import{academy} from'../academy/page';
+
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
@@ -204,19 +201,28 @@ export default function DashboardPage() {
   return (
     <div className="dashboard max-w-6xl mx-auto p-6 bg-gray-900 min-h-screen text-white space-y-8">
       <header className="flex flex-col md:flex-row justify-between items-center gap-4">
-        <h1 className="flex items-center gap-2 text-3xl font-bold text-blue-400">
-          <FaUserCircle /> Hello, {user.email.split('@')[0]}
-        </h1>
-        <button
-          onClick={async () => {
-            await supabase.auth.signOut();
-            router.push('/login');
-          }}
-          className="btn-danger bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded flex items-center gap-2"
-        >
-          <FaSignOutAlt /> Logout
-        </button>
-      </header>
+  <h1 className="flex items-center gap-2 text-3xl font-bold text-blue-400">
+    <FaUserCircle /> Hello, {user.email.split('@')[0]}
+  </h1>
+  <div className="flex gap-4">
+    <a
+      href="/academy"
+      className="btn-secondary bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded flex items-center gap-2"
+    >
+      <FaBook /> Go to Academy
+    </a>
+    <button
+      onClick={async () => {
+        await supabase.auth.signOut();
+        router.push('/login');
+      }}
+      className="btn-danger bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded flex items-center gap-2"
+    >
+      <FaSignOutAlt /> Logout
+    </button>
+  </div>
+</header>
+
 
       {/* Academy Courses Section */}
       <section>
