@@ -11,6 +11,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="bg-black text-white font-sans">
         {children}
+     <WhatsappSupport />
+        <AIPopup />
       </body>
     </html>
   );
