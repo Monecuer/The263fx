@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { FaUser, FaLock } from 'react-icons/fa';
 
 export function AuthForm({ type = 'login' }) {
-  const router = useRouter();np 
+  const router = useRouter(); 
   const isLogin = type === 'login';
 
   const [email, setEmail] = useState('');
