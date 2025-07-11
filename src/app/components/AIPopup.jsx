@@ -9,12 +9,11 @@ export default function AIPopup() {
     {
       role: 'system',
       content:
-        'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers .',
+        'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers.',
     },
     {
       role: 'assistant',
-      content:
-        'Hello! Ask me anything about forex trading .',
+      content: 'Hello! Ask me anything about forex trading.',
     },
   ]);
   const [input, setInput] = useState('');
@@ -34,30 +33,23 @@ export default function AIPopup() {
     setLoading(true);
 
     try {
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const res = await fetch('/api/ai', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer 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`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [...messages, userMessage].filter((m) => m.content.trim() !== ''),
-          max_tokens: 300,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [...messages, userMessage] }),
       });
 
       if (!res.ok) throw new Error(`API error: ${res.status}`);
 
       const data = await res.json();
-      const assistantReply = data.choices?.[0]?.message?.content || 'No response.';
+      const reply = data.choices?.[0]?.message?.content || 'No response.';
 
-      setMessages((prev) => [...prev, { role: 'assistant', content: assistantReply }]);
+      setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
     } catch (err) {
       console.error('AI error:', err);
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: ' AI failed. Please try again later.' },
+        { role: 'assistant', content: 'AI failed. Please try again later.' },
       ]);
     }
 
@@ -73,7 +65,6 @@ export default function AIPopup() {
 
   return (
     <>
-      {/* Floating Button */}
       <button
         aria-label={open ? 'Close AI Chat' : 'Open AI Chat'}
         onClick={() => setOpen((o) => !o)}
@@ -83,10 +74,8 @@ export default function AIPopup() {
         {open ? <FaTimes size={28} /> : <FaRobot size={28} />}
       </button>
 
-      {/* Chat Popup */}
       {open && (
         <div className="fixed bottom-20 left-6 w-80 max-w-full h-96 bg-white rounded-xl shadow-xl flex flex-col overflow-hidden z-50">
-          {/* Header */}
           <div className="bg-blue-600 text-white p-3 flex justify-between items-center">
             <h3 className="font-semibold">The263Fx AI Assistant</h3>
             <button onClick={() => setOpen(false)} className="hover:text-gray-200">
@@ -94,7 +83,6 @@ export default function AIPopup() {
             </button>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 p-4 overflow-y-auto text-sm space-y-3 bg-gray-50">
             {messages
               .filter((m) => m.role !== 'system')
@@ -113,7 +101,6 @@ export default function AIPopup() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
           <div className="p-3 border-t flex gap-2 bg-white">
             <textarea
               rows={1}
