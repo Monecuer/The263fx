@@ -7,20 +7,18 @@ import Link from 'next/link';
 import { FaUser, FaLock } from 'react-icons/fa';
 
 export function AuthForm({ type = 'login' }) {
-  const router = useRouter(); 
+  const router = useRouter();
   const isLogin = type === 'login';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
-    setMessage(null);
     setLoading(true);
 
     if (!isLogin && password !== confirm) {
@@ -31,25 +29,53 @@ export function AuthForm({ type = 'login' }) {
 
     try {
       if (isLogin) {
-        const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
         if (loginError) {
           setError(loginError.message);
         } else {
           const isAdmin = email.toLowerCase() === 'the263fx@gmail.com';
           router.push(isAdmin ? '/admin-dashboard' : '/dashboard');
         }
+
       } else {
-        const { error: signUpError } = await supabase.auth.signUp({ email, password });
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
         if (signUpError) {
           setError(signUpError.message);
         } else {
-          setMessage('Sign up successful! Please login.');
-          setTimeout(() => {
-            router.push('/login');
-          }, 2000);
+          const userId = data?.user?.id;
+
+          if (userId) {
+            const { error: profileError } = await supabase
+              .from('profiles')
+              .insert([{
+                id: userId,
+                name: email,
+                email: email,
+                goal: '',
+                created_at: new Date(),
+              }]);
+
+            if (profileError) {
+              console.error('Error saving profile:', profileError.message);
+              setError('Signup succeeded but profile creation failed.');
+            } else {
+              router.push('/profile-setup'); // ✅ Navigate to setup page
+            }
+          } else {
+            setError('Signup successful but user ID not found.');
+          }
         }
       }
     } catch (err) {
+      console.error(err);
       setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
@@ -67,7 +93,6 @@ export function AuthForm({ type = 'login' }) {
         </h2>
 
         {error && <p className="mb-4 text-red-400 text-sm text-center">{error}</p>}
-        {message && <p className="mb-4 text-green-400 text-sm text-center">{message}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center bg-white/20 p-3 rounded-xl">

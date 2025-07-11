@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { sendBulkEmail } from '../../utils/sendBulkEmail';
+import { FaUser, FaUsers, FaBell, FaEdit, FaSave, FaTimes, FaEnvelope } from 'react-icons/fa';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -10,78 +12,99 @@ export default function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
-
   const [userCount, setUserCount] = useState(0);
   const [recentUsers, setRecentUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [emailStatus, setEmailStatus] = useState('');
 
+  // Get current user
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Error getting user:", error.message);
+        setError("❌ Failed to get user.");
+      } else {
+        setUser(data.user);
+      }
     };
     getUser();
   }, []);
 
+  // Fetch profile info
   useEffect(() => {
-    async function fetchProfile() {
-      if (!user) return;
+    const fetchProfile = async () => {
+      if (!user?.id) return;
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
 
-      if (data) {
+      if (error) {
+        console.error("Error fetching profile:", error.message);
+        setError("⚠️ Failed to load profile.");
+      } else if (data) {
         setProfile(data);
-        setName(data.name || '');
+        setName(data.full_name || '');
         setBio(data.bio || '');
       }
-    }
+    };
 
     fetchProfile();
   }, [user]);
 
-  async function saveProfile() {
+  // Save profile updates
+  const saveProfile = async () => {
+    if (!user?.id) return;
+
     setSaving(true);
+
     const updates = {
       id: user.id,
-      name,
+      name: name,
       bio,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
 
     const { error } = await supabase.from('profiles').upsert(updates);
     setSaving(false);
-    if (!error) {
-      alert('Profile updated!');
+
+    if (error) {
+      console.error("Error saving profile:", error.message);
+      alert('❌ Failed to save profile.');
+    } else {
+      alert('✅ Profile updated!');
       setEditingProfile(false);
       setProfile(updates);
-    } else {
-      alert('Failed to save profile.');
     }
-  }
+  };
 
-  async function fetchAdminData() {
+  // Fetch admin data
+  const fetchAdminData = async () => {
     try {
-      const { data: latest, error: latestErr } = await supabase
+      const { data: latest, error: fetchError } = await supabase
         .from('profiles')
-        .select('id, email, name, created_at')
+        .select('id, email,name, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
 
-      const { count, error: countErr } = await supabase
+      if (fetchError) throw fetchError;
+
+      const { count, error: countError } = await supabase
         .from('profiles')
         .select('id', { count: 'exact', head: true });
 
-      if (latestErr || countErr) throw new Error((latestErr || countErr).message);
-      return { count: count ?? 0, latest };
+      if (countError) throw countError;
+
+      return { count: count ?? 0, latest: latest ?? [] };
     } catch (err) {
-      console.error('Supabase fetch error:', err.message);
+      console.error("Admin data error:", err.message);
       throw err;
     }
-  }
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -98,6 +121,22 @@ export default function AdminDashboard() {
     getData();
   }, []);
 
+  // Send bulk email
+  const sendEmailToAll = async () => {
+    setEmailStatus('Sending...');
+    try {
+      for (const u of recentUsers) {
+        const displayName = u.name || u.email;
+        await sendBulkEmail(displayName, "📢 Hello from The263Fx Admin! Stay tuned for updates.");
+      }
+      setEmailStatus('✅ Emails sent to all users!');
+    } catch (err) {
+      console.error("Email error:", err.message);
+      setEmailStatus('❌ Failed to send emails.');
+    }
+    setTimeout(() => setEmailStatus(''), 5000);
+  };
+
   if (loading) {
     return <div className="p-6 text-white bg-gray-900">🔄 Loading dashboard...</div>;
   }
@@ -112,26 +151,24 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6 min-h-screen bg-gray-900 text-white">
-      <h1 className="text-4xl font-bold mb-8">🛠️ Admin Dashboard</h1>
+      <h1 className="text-4xl font-bold mb-8 flex items-center gap-2"><FaUser /> Admin Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="p-6 bg-gray-800 rounded-lg shadow">
-          <h2 className="text-2xl font-semibold mb-4">👥 Total Users</h2>
+          <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaUsers /> Total Users</h2>
           <p className="text-5xl font-bold text-green-400">{userCount}</p>
         </div>
 
         <div className="p-6 bg-gray-800 rounded-lg shadow">
-          <h2 className="text-2xl font-semibold mb-4">🕒 Recent Signups</h2>
-          {recentUsers.length === 0 ? (
+          <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaUser /> Recent Signups</h2>
+          {!recentUsers.length ? (
             <p>No recent users</p>
           ) : (
             <ul className="space-y-2">
               {recentUsers.map((u) => (
-                <li key={u.id} className="flex justify-between">
-                  <span>{u.name || u.email}</span>
-                  <span className="text-sm text-gray-400">
-                    {new Date(u.created_at).toLocaleDateString()}
-                  </span>
+                <li key={u.id} className="flex justify-between text-sm">
+                  <span>{u.full_name || u.email}</span>
+                  <span className="text-gray-400">{new Date(u.created_at).toLocaleDateString()}</span>
                 </li>
               ))}
             </ul>
@@ -140,16 +177,16 @@ export default function AdminDashboard() {
       </div>
 
       <div className="p-6 bg-gray-800 rounded-lg shadow mb-8">
-        <h2 className="text-2xl font-semibold mb-4">🧑‍💼 Your Profile</h2>
+        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaUser /> Your Profile</h2>
         {!editingProfile ? (
           <div>
             <p><strong>Name:</strong> {profile?.name || 'Not set'}</p>
             <p><strong>Bio:</strong> {profile?.bio || 'No bio provided'}</p>
             <button
               onClick={() => setEditingProfile(true)}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+              className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2"
             >
-              Edit Profile
+              <FaEdit /> Edit Profile
             </button>
           </div>
         ) : (
@@ -171,15 +208,15 @@ export default function AdminDashboard() {
               <button
                 onClick={saveProfile}
                 disabled={saving}
-                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded"
+                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded flex items-center gap-2"
               >
-                {saving ? 'Saving...' : 'Save'}
+                <FaSave /> {saving ? 'Saving...' : 'Save'}
               </button>
               <button
                 onClick={() => setEditingProfile(false)}
-                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
+                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded flex items-center gap-2"
               >
-                Cancel
+                <FaTimes /> Cancel
               </button>
             </div>
           </div>
@@ -187,10 +224,14 @@ export default function AdminDashboard() {
       </div>
 
       <div className="p-6 bg-gray-800 rounded-lg shadow">
-        <h2 className="text-2xl font-semibold mb-4">🔔 Send Notifications</h2>
-        <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
-          Send Email to All Users
+        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaBell /> Notifications</h2>
+        <button
+          onClick={sendEmailToAll}
+          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2"
+        >
+          <FaEnvelope /> Send Email to All Users
         </button>
+        {emailStatus && <p className="mt-2 text-green-400">{emailStatus}</p>}
       </div>
     </div>
   );

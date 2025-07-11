@@ -1,5 +1,7 @@
 {
-  "/api/ai/route": "app/api/ai/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js"
+  "/login/page": "app/login/page.js",
+  "/admin-dashboard/page": "app/admin-dashboard/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/profile-setup/page": "app/profile-setup/page.js"
 }
