@@ -38,7 +38,7 @@ export default function AIPopup() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer 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`,
+          Authorization: `Bearer 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`,
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
