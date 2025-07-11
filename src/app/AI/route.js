@@ -17,7 +17,7 @@ export async function POST(req) {
 
   const data = await response.json();
 
-  const reply = data?.output?.text || "Bo AI couldn't find a response.";
+  const reply = data?.output?.text || "couldn't find a response.";
 
   return new Response(JSON.stringify({ reply }));
 }
