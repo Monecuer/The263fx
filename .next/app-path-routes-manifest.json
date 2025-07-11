@@ -1,0 +1,14 @@
+{
+  "/api/ai/route": "/api/ai",
+  "/_not-found/page": "/_not-found",
+  "/academy/page": "/academy",
+  "/components/payment/page": "/components/payment",
+  "/blog/page": "/blog",
+  "/login/page": "/login",
+  "/page": "/",
+  "/admin-dashboard/page": "/admin-dashboard",
+  "/profile-setup/page": "/profile-setup",
+  "/signup/page": "/signup",
+  "/results/page": "/results",
+  "/dashboard/page": "/dashboard"
+}
