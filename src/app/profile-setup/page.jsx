@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import EditProfile from '../components/EditProfile'; // Adjust path if needed
+import { FaUserEdit, FaBullseye } from 'react-icons/fa';
 
 export default function ProfileSetupPage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -17,7 +20,7 @@ export default function ProfileSetupPage() {
       } = await supabase.auth.getSession();
 
       if (error || !session?.user) {
-        window.location.href = '/login'; // Redirect to login if not authenticated
+        router.push('/login'); // Use Next.js router
         return;
       }
 
@@ -26,7 +29,7 @@ export default function ProfileSetupPage() {
     }
 
     loadUser();
-  }, []);
+  }, [router, supabase]);
 
   if (loading) {
     return (
