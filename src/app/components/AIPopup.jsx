@@ -33,16 +33,20 @@ export default function AIPopup() {
     setLoading(true);
 
     try {
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const res = await fetch('https://api.aimlapi.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer 84c456a0c5ed4ef3af82c67256d411ca', // Secure in .env in prod
+          Authorization: 'Bearer 84c456a0c5ed4ef3af82c67256d411ca',
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
+          model: 'google/gemma-3n-e4b-it',
           messages: [...messages, userMessage],
-          max_tokens: 300,
+          temperature: 0.7,
+          top_p: 0.7,
+          frequency_penalty: 1,
+          max_tokens: 512,
+          top_k: 50,
         }),
       });
 
