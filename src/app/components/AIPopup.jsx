@@ -3,16 +3,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaRobot, FaTimes } from 'react-icons/fa';
 
-const AIML_API_KEY = '0576c22b2f834b638f0c2b3aaa65caa8'; // Your real API key
-const AIML_API_URL = 'https://api.aimlapi.com/v1/chat/completions';
-
 export default function AIPopup() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: 'system',
-      content:
-        'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers.',
+      content: 'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers.',
     },
     {
       role: 'assistant',
@@ -36,31 +32,24 @@ export default function AIPopup() {
     setLoading(true);
 
     try {
-      // Prepare the full messages array with system + previous + user
-      const payloadMessages = [...messages, userMessage].filter(m => m.content.trim() !== '');
-
-      const res = await fetch(AIML_API_URL, {
+      const res = await fetch('https://api.aimlapi.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${AIML_API_KEY}`,
+          Authorization: `Bearer 0576c22b2f834b638f0c2b3aaa65caa8`, // ✅ Your key here
         },
         body: JSON.stringify({
           model: 'gpt-4o',
-          messages: payloadMessages,
+          messages: [...messages, userMessage],
           temperature: 0.7,
           max_tokens: 512,
         }),
       });
 
-      if (!res.ok) {
-        throw new Error(`API error: ${res.status} ${res.statusText}`);
-      }
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
 
       const data = await res.json();
-
       const reply = data.choices?.[0]?.message?.content || 'No response.';
-
       setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
     } catch (err) {
       console.error('AI error:', err);
