@@ -8,7 +8,8 @@ export default function AIPopup() {
   const [messages, setMessages] = useState([
     {
       role: 'system',
-      content: 'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers.',
+      content:
+        'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers.',
     },
     {
       role: 'assistant',
@@ -32,18 +33,10 @@ export default function AIPopup() {
     setLoading(true);
 
     try {
-      const res = await fetch('https://api.aimlapi.com/v1/chat/completions', {
+      const res = await fetch('/api/ai', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer 0576c22b2f834b638f0c2b3aaa65caa8`, // ✅ Your key here
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o',
-          messages: [...messages, userMessage],
-          temperature: 0.7,
-          max_tokens: 512,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [...messages, userMessage] }),
       });
 
       if (!res.ok) throw new Error(`API error: ${res.status}`);
@@ -112,21 +105,4 @@ export default function AIPopup() {
               rows={1}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask about forex or The263Fx..."
-              className="flex-1 border rounded px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              disabled={loading}
-            />
-            <button
-              onClick={sendMessage}
-              disabled={loading || !input.trim()}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-4 rounded"
-            >
-              {loading ? '...' : 'Send'}
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
+              onKey
