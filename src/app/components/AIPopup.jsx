@@ -1,4 +1,3 @@
-async function sendMessage() {
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -38,7 +37,7 @@ export default function AIPopup() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer 84c456a0c5ed4ef3af82c67256d411ca', // 🔒 Caution: exposed API key
+          Authorization: 'Bearer 84c456a0c5ed4ef3af82c67256d411ca', // Secure in .env in prod
         },
         body: JSON.stringify({
           model: 'gpt-4o',
