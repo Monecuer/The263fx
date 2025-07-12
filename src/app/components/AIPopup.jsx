@@ -105,4 +105,21 @@ export default function AIPopup() {
               rows={1}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKey
+              onKeyDown={handleKeyDown}
+              placeholder="Ask about forex or The263Fx..."
+              className="flex-1 border rounded px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={loading}
+            />
+            <button
+              onClick={sendMessage}
+              disabled={loading || !input.trim()}
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-4 rounded"
+            >
+              {loading ? '...' : 'Send'}
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
