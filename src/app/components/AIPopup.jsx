@@ -28,7 +28,7 @@ export default function AIMLChat() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer 84c456a0c5ed4ef3af82c67256d411ca', // Your API key here
+          Authorization: 'Bearer 0576c22b2f834b638f0c2b3aaa65caa8', // Your API key here
         },
         body: JSON.stringify({
           model: 'gpt-4o',
