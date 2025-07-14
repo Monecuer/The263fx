@@ -81,7 +81,7 @@ export default function Testimonials() {
           <h3 className="text-2xl font-semibold mb-4">Connect with Us</h3>
           <div className="flex justify-center space-x-6 text-3xl text-gray-300">
             <a
-              href="https://wa.me/263776543537"
+              href="https://wa.me/263775007225"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -90,7 +90,7 @@ export default function Testimonials() {
               <FaWhatsapp />
             </a>
             <a
-              href="https://facebook.com/The263fx"
+              href="="https://wa.me/263775007225"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -99,7 +99,7 @@ export default function Testimonials() {
               <FaFacebookF />
             </a>
             <a
-              href="https://www.tiktok.com/@The263fx"
+              href="https://www.facebook.com/profile.php?id=61578267111312"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
@@ -108,7 +108,7 @@ export default function Testimonials() {
               <FaTiktok />
             </a>
             <a
-              href="https://www.youtube.com/c/The263fx"
+              href="https://www.tiktok.com/@the263_fx"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="YouTube"
@@ -117,7 +117,7 @@ export default function Testimonials() {
               <FaYoutube />
             </a>
             <a
-              href="https://The263fx.netlify.app"
+              href="https://www.youtube.com/@The263Fx"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Website"
