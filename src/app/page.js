@@ -1,7 +1,7 @@
+// app/page.js
 'use client';
 
 import { useEffect } from 'react';
-import Script from 'next/script';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -16,12 +16,11 @@ import GoogleAd from './components/GoogleAd';
 export default function Home() {
   useEffect(() => {
     try {
-      // Check if adsbygoogle is available, then push
-      if (window.adsbygoogle && process.browser) {
+      if (window.adsbygoogle) {
         window.adsbygoogle.push({});
       }
     } catch (e) {
-      console.error('adsbygoogle push error:', e);
+      console.error('AdSense error:', e);
     }
   }, []);
 
@@ -31,13 +30,13 @@ export default function Home() {
       <Hero />
       <About />
 
-      {/* AdSense ad unit with min dimensions to avoid zero size */}
+      {/* Inline AdSense Ad Unit */}
       <div className="flex justify-center my-10" style={{ minWidth: 320, minHeight: 50 }}>
         <ins
           className="adsbygoogle"
           style={{ display: 'block', minWidth: '320px', minHeight: '50px' }}
           data-ad-client="ca-pub-4437850977433689"
-          data-ad-slot="2480789669" // Replace with your actual Ad Slot ID if different
+          data-ad-slot="2480789669"
           data-ad-format="auto"
           data-full-width-responsive="true"
         />
@@ -47,9 +46,11 @@ export default function Home() {
       <Testimonials />
       <Results />
       <Footer />
+
+      {/* Support & Assistant */}
       <AIPopup />
       <WhatsappSupport />
-       <GoogleAd />
+      <GoogleAd />
     </>
   );
 }
