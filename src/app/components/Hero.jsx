@@ -62,10 +62,10 @@ function Hero() {
 
       {/* 🔗 Social Icons */}
       <footer className="relative z-30 mt-12 mb-6 flex justify-center space-x-6">
-        <SocialIcon href="https://twitter.com/the263fx" src="/icons/twitter.svg" alt="Twitter" />
-        <SocialIcon href="https://facebook.com/the263fx" src="/icons/facebook.svg" alt="Facebook" />
-        <SocialIcon href="https://youtube.com/the263fx" src="/icons/youtube.svg" alt="YouTube" />
-        <SocialIcon href="https://tiktok.com/@the263fx" src="/icons/tiktok.svg" alt="TikTok" />
+        <SocialIcon href="https://twitter.com/_The263fx_" src="/icons/twitter.svg" alt="Twitter" />
+        <SocialIcon href="https://www.facebook.com/profile.php?id=61578267111312" src="/icons/facebook.svg" alt="Facebook" />
+        <SocialIcon href="https://www.youtube.com/@The263Fx" src="/icons/youtube.svg" alt="YouTube" />
+        <SocialIcon href="https://www.tiktok.com/@the263_fx" src="/icons/tiktok.svg" alt="TikTok" />
       </footer>
     </section>
   );
