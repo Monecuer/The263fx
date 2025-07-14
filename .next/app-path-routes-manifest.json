@@ -1,0 +1,14 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/openrouter/route": "/api/openrouter",
+  "/components/payment/page": "/components/payment",
+  "/login/page": "/login",
+  "/dashboard/page": "/dashboard",
+  "/profile-setup/page": "/profile-setup",
+  "/academy/page": "/academy",
+  "/signup/page": "/signup",
+  "/blog/page": "/blog",
+  "/results/page": "/results",
+  "/page": "/",
+  "/admin-dashboard/page": "/admin-dashboard"
+}

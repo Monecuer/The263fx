@@ -24,6 +24,6 @@ export default function GoogleAd() {
         data-ad-format="auto"
         data-full-width-responsive="true"
       />
-    </>
+    </> 
   );
 }
