@@ -1,7 +1,6 @@
-// app/layout.js or app/layout.jsx
+// app/layout.js
 import './globals.css';
 import Script from 'next/script';
-
 import WhatsappSupport from './components/WhatsappSupport';
 import AIPopup from './components/AIPopup';
 import GoogleAd from './components/GoogleAd';
@@ -15,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* SEO & AdSense */}
+        {/* SEO & AdSense Meta */}
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={metadata.description} />
@@ -24,15 +23,12 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
       </head>
       <body className="bg-black text-white font-sans relative">
-        {/* App Pages */}
         {children}
-
-        {/* Components */}
+        {/* Global Components */}
         <GoogleAd />
         <WhatsappSupport />
         <AIPopup />
-
-        {/* Load AdSense script only once */}
+        {/* Load AdSense once */}
         <Script
           async
           strategy="afterInteractive"
