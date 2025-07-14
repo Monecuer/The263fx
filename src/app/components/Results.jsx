@@ -34,16 +34,16 @@ export default function Results() {
       {/* Footer */}
       <footer className="w-full py-6 text-center border-t border-gray-700 mt-10">
         <div className="flex justify-center space-x-6">
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+          <a href="https://twitter.com" target="_blank" rel="https://x.com/_The263fx_" aria-label="Twitter">
             <Image src="/icons/twitter.svg" alt="Twitter" width={24} height={24} />
           </a>
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <a href="https://facebook.com" target="_blank" rel="https://www.facebook.com/profile.php?id=61578267111312" aria-label="Facebook">
             <Image src="/icons/facebook.svg" alt="Facebook" width={24} height={24} />
           </a>
-          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <a href="https://youtube.com" target="_blank" rel="https://www.youtube.com/@The263Fx" aria-label="YouTube">
             <Image src="/icons/youtube.svg" alt="YouTube" width={24} height={24} />
           </a>
-          <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          <a href="https://tiktok.com" target="_blank" rel="https://www.tiktok.com/@the263_fx" aria-label="TikTok">
             <Image src="/icons/tiktok.svg" alt="TikTok" width={24} height={24} />
           </a>
         </div>
