@@ -29,7 +29,6 @@ export default function Testimonials() {
             <ul className="text-gray-300 list-disc pl-6 space-y-1">
               <li>Copy Trading</li>
               <li>Signals</li>
-            
             </ul>
           </div>
 
@@ -90,7 +89,7 @@ export default function Testimonials() {
               <FaWhatsapp />
             </a>
             <a
-              href="="https://wa.me/263775007225"
+              href="https://www.facebook.com/profile.php?id=61578267111312"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -99,7 +98,7 @@ export default function Testimonials() {
               <FaFacebookF />
             </a>
             <a
-              href="https://www.facebook.com/profile.php?id=61578267111312"
+              href="https://www.tiktok.com/@the263_fx"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
@@ -108,7 +107,7 @@ export default function Testimonials() {
               <FaTiktok />
             </a>
             <a
-              href="https://www.tiktok.com/@the263_fx"
+              href="https://www.youtube.com/@The263Fx"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="YouTube"
@@ -117,7 +116,7 @@ export default function Testimonials() {
               <FaYoutube />
             </a>
             <a
-              href="https://www.youtube.com/@The263Fx"
+              href="https://the263fx.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Website"
