@@ -1,4 +1,4 @@
-// app/layout.js
+// /app/layout.js
 import './globals.css';
 import Script from 'next/script';
 import AIPopup from './components/AIPopup';
@@ -30,11 +30,11 @@ export default function RootLayout({ children }) {
         <WhatsappSupport />
         <AIPopup />
 
+        {/* ✅ FIXED: Correct AdSense Script */}
         <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4437850977433689"
           strategy="afterInteractive"
           async
-          data-ad-client="ca-pub-4437850977433689"
           crossOrigin="anonymous"
         />
       </body>
