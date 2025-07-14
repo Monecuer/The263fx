@@ -8,7 +8,7 @@ import CourseModules from './components/CourseModules';
 import Testimonials from './components/Testimonials';
 import Results from './components/Results';
 import Footer from './components/Footer';
-import GoogleAd from './components/GoogleAd'; // Optional: global ad component
+import GoogleAd from './components/GoogleAd';
 import AIPopup from './components/AIPopup';
 import WhatsappSupport from './components/WhatsappSupport';
 
@@ -29,11 +29,12 @@ export default function Home() {
       <Hero />
       <About />
 
-      {/* ✅ AdSense Block */}
+      {/* ✅ AdSense Block — Corrected */}
       <div className="flex justify-center my-10">
         <ins
           className="adsbygoogle"
           style={{ display: 'block', minWidth: 320, minHeight: 50 }}
+          data-ad-client="ca-pub-4437850977433689" // ✅ REQUIRED!
           data-ad-slot="2480789669"
           data-ad-format="auto"
           data-full-width-responsive="true"
@@ -44,7 +45,9 @@ export default function Home() {
       <Testimonials />
       <Results />
       <Footer />
-      <GoogleAd /> {/* Optional additional slot */}
+
+      {/* ✅ Optional global ad + support components */}
+      <GoogleAd />
       <AIPopup />
       <WhatsappSupport />
     </>
