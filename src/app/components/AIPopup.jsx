@@ -1,125 +1,198 @@
 'use client';
+import { useEffect, useState, useRef } from 'react';
 
-import { useState, useEffect, useRef } from 'react';
-import { FaRobot, FaTimes } from 'react-icons/fa';
-
-export default function AIPopup() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      role: 'system',
-      content:
-        'You are The263Fx AI assistant, expert in forex trading education based on The263Fx and trusted brokers.',
-    },
-    {
-      role: 'assistant',
-      content: 'Hello! Ask me anything about forex trading.',
-    },
-  ]);
+const AIPopup = () => {
+  const [visible, setVisible] = useState(true);
+  const [messages, setMessages] = useState([{ from: 'ai', text: '📈 Hi! Ready to trade smarter today?' }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    if ('webkitSpeechRecognition' in window) {
+      const recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript);
+        setListening(false);
+      };
+
+      recognition.onerror = () => setListening(false);
+      recognition.onend = () => setListening(false);
+
+      recognitionRef.current = recognition;
+    }
+  }, []);
+
+  useEffect(() => {
+    // Scroll to bottom on new message
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  async function sendMessage() {
-    if (!input.trim()) return;
+  const toggleVoice = () => {
+    if (!recognitionRef.current) return;
+    if (listening) {
+      recognitionRef.current.stop();
+      setListening(false);
+    } else {
+      recognitionRef.current.start();
+      setListening(true);
+    }
+  };
 
-    const userMessage = { role: 'user', content: input.trim() };
-    setMessages((prev) => [...prev, userMessage]);
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    const newMessage = { from: 'user', text: input };
+    setMessages((prev) => [...prev, newMessage]);
     setInput('');
     setLoading(true);
 
     try {
-      const res = await fetch('/api/ai', {
+      const res = await fetch('/api/openrouter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
+        body: JSON.stringify({ question: newMessage.text }),
       });
 
-      if (!res.ok) throw new Error(`API error: ${res.status}`);
-
+      if (!res.ok) throw new Error('API error');
       const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content || 'No response.';
-      setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
-    } catch (err) {
-      console.error('AI error:', err);
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: 'AI failed. Please try again later.' },
-      ]);
-    }
 
-    setLoading(false);
-  }
-
-  function handleKeyDown(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
+      // Simulate typing effect (optional)
+      let i = 0;
+      const reply = data.reply || "Sorry, no response.";
+      const interval = setInterval(() => {
+        i++;
+        setMessages((prev) => {
+          const last = prev[prev.length - 1];
+          if (last?.from === 'ai_typing') {
+            return [...prev.slice(0, -1), { from: 'ai_typing', text: reply.slice(0, i) }];
+          } else {
+            return [...prev, { from: 'ai_typing', text: reply.slice(0, i) }];
+          }
+        });
+        if (i >= reply.length) {
+          clearInterval(interval);
+          setMessages((prev) => [...prev.slice(0, -1), { from: 'ai', text: reply }]);
+        }
+      }, 20);
+    } catch {
+      setMessages((prev) => [...prev, { from: 'ai', text: '⚠️ Sorry, something went wrong.' }]);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') sendMessage();
+  };
 
   return (
     <>
-      <button
-        aria-label={open ? 'Close AI Chat' : 'Open AI Chat'}
-        onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-6 left-6 z-50 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center animate-pulse"
-        style={{ width: 56, height: 56 }}
-      >
-        {open ? <FaTimes size={28} /> : <FaRobot size={28} />}
-      </button>
-
-      {open && (
-        <div className="fixed bottom-20 left-6 w-80 max-w-full h-96 bg-white rounded-xl shadow-xl flex flex-col overflow-hidden z-50">
-          <div className="bg-blue-600 text-white p-3 flex justify-between items-center">
-            <h3 className="font-semibold">The263Fx AI Assistant</h3>
-            <button onClick={() => setOpen(false)} className="hover:text-gray-200">
-              <FaTimes />
-            </button>
+      {visible && (
+        <div className="ai-popup">
+          <div className="popup-header">📊 The263fx Assistant</div>
+          <div className="popup-body">
+            {messages.map((msg, i) => (
+              <div key={i} className={`msg ${msg.from}`}>{msg.text}</div>
+            ))}
+            {loading && <div className="msg ai loading">Typing...</div>}
+            <div ref={messagesEndRef}></div>
           </div>
-
-          <div className="flex-1 p-4 overflow-y-auto text-sm space-y-3 bg-gray-50">
-            {messages
-              .filter((m) => m.role !== 'system')
-              .map((m, i) => (
-                <div
-                  key={i}
-                  className={`p-3 rounded-xl max-w-[80%] whitespace-pre-wrap ${
-                    m.role === 'user'
-                      ? 'bg-blue-100 text-blue-900 ml-auto text-right'
-                      : 'bg-gray-200 text-gray-800 mr-auto text-left'
-                  }`}
-                >
-                  {m.content}
-                </div>
-              ))}
-            <div ref={messagesEndRef} />
-          </div>
-
-          <div className="p-3 border-t flex gap-2 bg-white">
-            <textarea
-              rows={1}
+          <div className="popup-input">
+            <input
+              type="text"
+              placeholder="Ask about trading, e.g., market trends..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about forex or The263Fx..."
-              className="flex-1 border rounded px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              disabled={loading}
             />
-            <button
-              onClick={sendMessage}
-              disabled={loading || !input.trim()}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-4 rounded"
-            >
-              {loading ? '...' : 'Send'}
-            </button>
+            <button onClick={sendMessage}>➤</button>
+            <button onClick={toggleVoice}>{listening ? '🎙️...' : '🎤'}</button>
           </div>
         </div>
       )}
+
+      <style jsx>{`
+        .ai-popup {
+          position: fixed;
+          bottom: 20px;
+          left: 20px;
+          width: 320px;
+          background: #121212;
+          border-radius: 12px;
+          overflow: hidden;
+          font-family: 'Segoe UI', sans-serif;
+          box-shadow: 0 0 20px rgba(0,0,0,0.5);
+          z-index: 9999;
+        }
+        .popup-header {
+          background: #004aad;
+          color: #fff;
+          padding: 14px;
+          font-weight: 600;
+          font-size: 16px;
+        }
+        .popup-body {
+          background: #1a1a1a;
+          color: #e0e0e0;
+          max-height: 300px;
+          overflow-y: auto;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .msg {
+          padding: 8px 12px;
+          border-radius: 8px;
+          max-width: 90%;
+          word-wrap: break-word;
+        }
+        .msg.user {
+          align-self: flex-end;
+          background: #004aad;
+          color: white;
+          text-align: right;
+        }
+        .msg.ai, .msg.ai_typing {
+          align-self: flex-start;
+          background: #2e2e2e;
+        }
+        .msg.loading {
+          font-style: italic;
+          color: #aaa;
+        }
+        .popup-input {
+          display: flex;
+          gap: 6px;
+          padding: 10px;
+          background: #222;
+        }
+        .popup-input input {
+          flex: 1;
+          padding: 8px;
+          border: none;
+          border-radius: 6px;
+          background: #333;
+          color: white;
+        }
+        .popup-input button {
+          background: #004aad;
+          border: none;
+          padding: 6px 10px;
+          border-radius: 6px;
+          color: white;
+          cursor: pointer;
+        }
+      `}</style>
     </>
   );
-}
+};
+
+export default AIPopup;
