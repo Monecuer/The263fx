@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react';
 
 const AIPopup = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [messages, setMessages] = useState([
     { from: 'ai', text: '📈 Welcome to The263Fx — ask anything about trading!' },
   ]);
@@ -12,6 +12,7 @@ const AIPopup = () => {
   const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
 
+  // Voice setup
   useEffect(() => {
     if ('webkitSpeechRecognition' in window) {
       const recognition = new webkitSpeechRecognition();
@@ -38,8 +39,13 @@ const AIPopup = () => {
 
   const toggleVoice = () => {
     if (!recognitionRef.current) return;
-    listening ? recognitionRef.current.stop() : recognitionRef.current.start();
-    setListening(!listening);
+    if (listening) {
+      recognitionRef.current.stop();
+      setListening(false);
+    } else {
+      recognitionRef.current.start();
+      setListening(true);
+    }
   };
 
   const sendMessage = async () => {
@@ -58,8 +64,8 @@ const AIPopup = () => {
 
       if (!res.ok) throw new Error('API error');
       const data = await res.json();
-
       const reply = data.reply || "⚠️ Sorry, I couldn't find a trading answer.";
+
       let i = 0;
       const interval = setInterval(() => {
         i++;
@@ -89,6 +95,12 @@ const AIPopup = () => {
 
   return (
     <>
+      {!visible && (
+        <button className="ai-face-button" onClick={() => setVisible(true)}>
+          🤖
+        </button>
+      )}
+
       {visible && (
         <div className="ai-popup">
           <div className="popup-header">
@@ -119,6 +131,25 @@ const AIPopup = () => {
       )}
 
       <style jsx>{`
+        .ai-face-button {
+          position: fixed;
+          bottom: 20px;
+          left: 20px;
+          background: #0056b3;
+          color: white;
+          font-size: 24px;
+          border: none;
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+          cursor: pointer;
+          z-index: 9998;
+        }
+
         .ai-popup {
           position: fixed;
           bottom: 20px;
@@ -128,7 +159,7 @@ const AIPopup = () => {
           border-radius: 12px;
           overflow: hidden;
           font-family: 'Segoe UI', sans-serif;
-          box-shadow: 0 0 20px rgba(0,0,0,0.5);
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
           z-index: 9999;
         }
 
@@ -215,4 +246,3 @@ const AIPopup = () => {
 };
 
 export default AIPopup;
-
