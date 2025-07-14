@@ -3,7 +3,9 @@ import { useEffect, useState, useRef } from 'react';
 
 const AIPopup = () => {
   const [visible, setVisible] = useState(true);
-  const [messages, setMessages] = useState([{ from: 'ai', text: '📈 Hi! Ready to trade smarter today?' }]);
+  const [messages, setMessages] = useState([
+    { from: 'ai', text: '📈 Welcome to The263Fx — ask anything about trading!' },
+  ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [listening, setListening] = useState(false);
@@ -31,19 +33,13 @@ const AIPopup = () => {
   }, []);
 
   useEffect(() => {
-    // Scroll to bottom on new message
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const toggleVoice = () => {
     if (!recognitionRef.current) return;
-    if (listening) {
-      recognitionRef.current.stop();
-      setListening(false);
-    } else {
-      recognitionRef.current.start();
-      setListening(true);
-    }
+    listening ? recognitionRef.current.stop() : recognitionRef.current.start();
+    setListening(!listening);
   };
 
   const sendMessage = async () => {
@@ -63,9 +59,8 @@ const AIPopup = () => {
       if (!res.ok) throw new Error('API error');
       const data = await res.json();
 
-      // Simulate typing effect (optional)
+      const reply = data.reply || "⚠️ Sorry, I couldn't find a trading answer.";
       let i = 0;
-      const reply = data.reply || "Sorry, no response.";
       const interval = setInterval(() => {
         i++;
         setMessages((prev) => {
@@ -96,24 +91,29 @@ const AIPopup = () => {
     <>
       {visible && (
         <div className="ai-popup">
-          <div className="popup-header">📊 The263fx Assistant</div>
+          <div className="popup-header">
+            📊 The263Fx Assistant
+            <button className="close-btn" onClick={() => setVisible(false)}>✖</button>
+          </div>
+
           <div className="popup-body">
             {messages.map((msg, i) => (
               <div key={i} className={`msg ${msg.from}`}>{msg.text}</div>
             ))}
-            {loading && <div className="msg ai loading">Typing...</div>}
+            {loading && <div className="msg ai loading">⌛ Thinking...</div>}
             <div ref={messagesEndRef}></div>
           </div>
+
           <div className="popup-input">
             <input
               type="text"
-              placeholder="Ask about trading, e.g., market trends..."
+              placeholder="Ask trading-related questions..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
             />
             <button onClick={sendMessage}>➤</button>
-            <button onClick={toggleVoice}>{listening ? '🎙️...' : '🎤'}</button>
+            <button onClick={toggleVoice}>{listening ? '🛑' : '🎤'}</button>
           </div>
         </div>
       )}
@@ -123,57 +123,74 @@ const AIPopup = () => {
           position: fixed;
           bottom: 20px;
           left: 20px;
-          width: 320px;
-          background: #121212;
+          width: 340px;
+          background: #0f0f0f;
           border-radius: 12px;
           overflow: hidden;
           font-family: 'Segoe UI', sans-serif;
           box-shadow: 0 0 20px rgba(0,0,0,0.5);
           z-index: 9999;
         }
+
         .popup-header {
-          background: #004aad;
+          background: #0056b3;
           color: #fff;
-          padding: 14px;
+          padding: 14px 16px;
           font-weight: 600;
-          font-size: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
+
+        .close-btn {
+          background: transparent;
+          border: none;
+          color: #fff;
+          font-size: 18px;
+          cursor: pointer;
+        }
+
         .popup-body {
-          background: #1a1a1a;
+          background: #1b1b1b;
           color: #e0e0e0;
           max-height: 300px;
           overflow-y: auto;
-          padding: 10px;
+          padding: 12px;
           display: flex;
           flex-direction: column;
           gap: 6px;
         }
+
         .msg {
           padding: 8px 12px;
           border-radius: 8px;
           max-width: 90%;
           word-wrap: break-word;
         }
+
         .msg.user {
           align-self: flex-end;
-          background: #004aad;
+          background: #0066ff;
           color: white;
-          text-align: right;
         }
+
         .msg.ai, .msg.ai_typing {
           align-self: flex-start;
           background: #2e2e2e;
         }
+
         .msg.loading {
           font-style: italic;
           color: #aaa;
         }
+
         .popup-input {
           display: flex;
           gap: 6px;
           padding: 10px;
           background: #222;
         }
+
         .popup-input input {
           flex: 1;
           padding: 8px;
@@ -182,12 +199,14 @@ const AIPopup = () => {
           background: #333;
           color: white;
         }
+
         .popup-input button {
-          background: #004aad;
+          background: #0056b3;
           border: none;
-          padding: 6px 10px;
+          padding: 8px 10px;
           border-radius: 6px;
           color: white;
+          font-size: 16px;
           cursor: pointer;
         }
       `}</style>
@@ -196,3 +215,4 @@ const AIPopup = () => {
 };
 
 export default AIPopup;
+
