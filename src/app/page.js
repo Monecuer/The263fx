@@ -34,7 +34,6 @@ export default function Home() {
         <ins
           className="adsbygoogle"
           style={{ display: 'block', minWidth: 320, minHeight: 50 }}
-          data-ad-client="ca-pub-4437850977433689"
           data-ad-slot="2480789669"
           data-ad-format="auto"
           data-full-width-responsive="true"
