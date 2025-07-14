@@ -1,4 +1,4 @@
-// app/layout.js or app/layout.jsx
+// app/layout.js or layout.jsx
 import './globals.css';
 import Script from 'next/script';
 
@@ -15,12 +15,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Metadata for SEO */}
+        {/* SEO Meta Tags */}
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={metadata.description} />
-        <meta name="keywords" content="Forex, Trading, Zimbabwe, The263Fx, Learn Forex" />
-        <meta name="author" content="The263Fx Team" />
+        <meta name="keywords" content="Forex, Trading, The263Fx, Learn Forex, Zimbabwe" />
+        <meta name="author" content="The263Fx Academy" />
         <meta name="robots" content="index, follow" />
         <meta name="google-adsense-account" content="ca-pub-4437850977433689" />
         <link rel="icon" href="/favicon.ico" />
@@ -33,15 +33,15 @@ export default function RootLayout({ children }) {
         <WhatsappSupport />
         <AIPopup />
 
-        {/* ✅ Google AdSense - Proper Load */}
+        {/* ✅ AdSense script - no data attributes here! */}
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-          data-ad-client="ca-pub-4437850977433689"
-          crossOrigin="anonymous"
           strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4437850977433689"
+          crossOrigin="anonymous"
         />
       </body>
     </html>
   );
 }
+
