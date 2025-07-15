@@ -82,7 +82,7 @@ export default function Testimonials() {
                 className="bg-white p-3 md:p-4 rounded-lg shadow-md animate-spin-slow"
               >
                 <img
-                  src="/brokers/fop-logo.png"
+                  src="/brokers/OFP.png"
                   alt="FOP Broker"
                   className="w-20 md:w-24 h-auto object-contain"
                 />
