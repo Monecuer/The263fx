@@ -8,12 +8,13 @@ module.exports = {
     extend: {
       animation: {
         'spin-slow': 'spin 8s linear infinite',
-        'scroll-horizontal': 'scrollX 30s linear infinite',
+        'scroll-horizontal': 'scrollX 25s linear infinite reverse',
+        'bounce-slow': 'bounce 3s infinite',
       },
       keyframes: {
         scrollX: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(100%)' },
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' },
         },
       },
     },
