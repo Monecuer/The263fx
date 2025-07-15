@@ -41,7 +41,7 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* ✅ Brokers Logos with Animation */}
+        {/* ✅ Brokers Section (Scrolling) */}
         <div className="mt-20 max-w-5xl mx-auto overflow-hidden">
           <h3 className="text-2xl font-semibold text-white mb-6">Our Trusted Brokers</h3>
           <div className="relative w-full h-32">
@@ -73,21 +73,26 @@ export default function Testimonials() {
                   className="w-20 md:w-24 h-auto object-contain"
                 />
               </a>
-
-              {/* FOP Broker - Placeholder with Rotation */}
-              <a
-                href="YOUR_FOP_LINK_HERE"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white p-3 md:p-4 rounded-lg shadow-md animate-spin-slow"
-              >
-                <img
-                  src="/brokers/OFP.png"
-                  alt="FOP Broker"
-                  className="w-20 md:w-24 h-auto object-contain"
-                />
-              </a>
             </div>
+          </div>
+        </div>
+
+        {/* ✅ Prop Firm Section (FOP with Bounce) */}
+        <div className="mt-20 max-w-3xl mx-auto text-center">
+          <h3 className="text-2xl font-semibold text-white mb-6">Recommended Prop Firm</h3>
+          <div className="flex justify-center items-center">
+            <a
+              href="YOUR_FOP_LINK_HERE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white p-4 rounded-lg shadow-md animate-bounce-slow transition"
+            >
+              <img
+                src="/brokers/FOP.png"
+                alt="FOP Prop Firm"
+                className="w-24 md:w-28 h-auto object-contain"
+              />
+            </a>
           </div>
         </div>
 
