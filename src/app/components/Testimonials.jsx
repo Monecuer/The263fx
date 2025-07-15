@@ -41,37 +41,53 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* ✅ Brokers Logos */}
-        <div className="mt-20 max-w-4xl mx-auto">
+        {/* ✅ Brokers Logos with Animation */}
+        <div className="mt-20 max-w-5xl mx-auto overflow-hidden">
           <h3 className="text-2xl font-semibold text-white mb-6">Our Trusted Brokers</h3>
-          <div className="flex justify-center gap-8 md:gap-16 flex-wrap items-center">
-            {/* Weltrade */}
-            <a
-              href="https://track.gowt.me/visit/?bta=44424&brand=weltrade"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white hover:bg-blue-100 p-3 md:p-4 rounded-lg shadow-md transition transform hover:scale-105"
-            >
-              <img
-                src="/brokers/weltrade-logo.png"
-                alt="Weltrade"
-                className="w-24 md:w-28 h-auto object-contain"
-              />
-            </a>
+          <div className="relative w-full h-32">
+            <div className="flex gap-10 items-center animate-scroll-horizontal w-max">
+              {/* Weltrade */}
+              <a
+                href="https://track.gowt.me/visit/?bta=44424&brand=weltrade"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white hover:bg-blue-100 p-3 md:p-4 rounded-lg shadow-md transition transform hover:scale-105"
+              >
+                <img
+                  src="/brokers/weltrade-logo.png"
+                  alt="Weltrade"
+                  className="w-24 md:w-28 h-auto object-contain"
+                />
+              </a>
 
-            {/* XM Global */}
-            <a
-              href="https://affs.click/rvrrk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white hover:bg-red-100 p-3 md:p-4 rounded-lg shadow-md transition transform hover:scale-105"
-            >
-              <img
-                src="/brokers/xm-logo.png"
-                alt="XM Global"
-                className="w-20 md:w-24 h-auto object-contain"
-              />
-            </a>
+              {/* XM Global */}
+              <a
+                href="https://affs.click/rvrrk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white hover:bg-red-100 p-3 md:p-4 rounded-lg shadow-md transition transform hover:scale-105"
+              >
+                <img
+                  src="/brokers/xm-logo.png"
+                  alt="XM Global"
+                  className="w-20 md:w-24 h-auto object-contain"
+                />
+              </a>
+
+              {/* FOP Broker - Placeholder with Rotation */}
+              <a
+                href="YOUR_FOP_LINK_HERE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white p-3 md:p-4 rounded-lg shadow-md animate-spin-slow"
+              >
+                <img
+                  src="/brokers/fop-logo.png"
+                  alt="FOP Broker"
+                  className="w-20 md:w-24 h-auto object-contain"
+                />
+              </a>
+            </div>
           </div>
         </div>
 
