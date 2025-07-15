@@ -89,7 +89,7 @@ export default function Testimonials() {
               rel="noopener noreferrer"
               className="underline text-blue-300 hover:text-blue-500"
             >
-              View Creatives
+             
             </a>
           </p>
           <div className="flex justify-center items-center">
