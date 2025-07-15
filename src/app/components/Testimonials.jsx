@@ -4,7 +4,7 @@ import {
   FaFacebookF,
   FaTiktok,
   FaYoutube,
-  FaGlobe
+  FaGlobe,
 } from "react-icons/fa";
 
 export default function Testimonials() {
@@ -41,8 +41,8 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* ✅ Brokers Section (Scrolling) */}
-        <div className="mt-20 max-w-5xl mx-auto overflow-hidden">
+        {/* ✅ Brokers Section (scrolling animation) */}
+        <div className="mt-20 max-w-5xl mx-auto overflow-hidden animate-fade-in">
           <h3 className="text-2xl font-semibold text-white mb-6">Our Trusted Brokers</h3>
           <div className="relative w-full h-32">
             <div className="flex gap-10 items-center animate-scroll-horizontal w-max">
@@ -77,8 +77,8 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* ✅ Prop Firm Section (FOP with Bounce) */}
-        <div className="mt-20 max-w-3xl mx-auto text-center">
+        {/* ✅ Prop Firms Section (FOP with bounce) */}
+        <div className="mt-20 max-w-3xl mx-auto text-center animate-fade-in">
           <h3 className="text-2xl font-semibold text-white mb-6">Recommended Prop Firm</h3>
           <div className="flex justify-center items-center">
             <a
