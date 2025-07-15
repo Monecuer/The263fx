@@ -80,7 +80,7 @@ export default function Testimonials() {
         {/* ✅ Prop Firms Section (FOP with bounce) */}
         <div className="mt-20 max-w-3xl mx-auto text-center animate-fade-in">
           <h3 className="text-2xl font-semibold text-white mb-4">
-            Recommended Prop Firm: 35% First Order / 15% Recurring
+            Recommended Prop Firm
           </h3>
           <p className="text-sm text-gray-400 mb-6">
             <a
