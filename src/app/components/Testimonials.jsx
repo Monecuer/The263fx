@@ -79,10 +79,22 @@ export default function Testimonials() {
 
         {/* ✅ Prop Firms Section (FOP with bounce) */}
         <div className="mt-20 max-w-3xl mx-auto text-center animate-fade-in">
-          <h3 className="text-2xl font-semibold text-white mb-6">Recommended Prop Firm</h3>
+          <h3 className="text-2xl font-semibold text-white mb-4">
+            Recommended Prop Firm: 35% First Order / 15% Recurring
+          </h3>
+          <p className="text-sm text-gray-400 mb-6">
+            <a
+              href="https://ofpfunding.everflowclient.io/creativebundles/a7xF02D8XDqlx4MPs4JmtXjmoUR8JCXV"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-300 hover:text-blue-500"
+            >
+              View Creatives
+            </a>
+          </p>
           <div className="flex justify-center items-center">
             <a
-              href="YOUR_FOP_LINK_HERE"
+              href="https://www.fuaqql8trk.com/7MFQSPD/2CTPL/"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white p-4 rounded-lg shadow-md animate-bounce-slow transition"
