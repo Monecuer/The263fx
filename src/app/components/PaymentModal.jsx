@@ -1,46 +1,43 @@
 'use client';
 
+import { useState } from 'react';
 import { FaBitcoin, FaTimes, FaUpload } from 'react-icons/fa';
 import { SiEcocash, SiBinance } from 'react-icons/si';
-import { useState } from 'react';
 
-export default function PaymentModal({ course, onCancel }) {
+export default function PaymentModal({ course, onClose }) {
   const [proof, setProof] = useState(null);
 
-  const handleProofUpload = () => {
+  const handleSubmit = () => {
     if (!proof) {
-      alert('❌ Please select a file first.');
+      alert('❌ Please upload payment proof.');
       return;
     }
-    alert('✅ Proof submitted! We will verify and enroll you.');
-    onCancel();
+    alert('✅ Payment proof submitted! You’ll be enrolled soon.');
+    onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 relative">
-        {/* ❌ Close Button */}
-        <button
-          onClick={onCancel}
-          className="absolute top-3 right-3 text-gray-500 hover:text-black"
-        >
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
+      <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md relative">
+        {/* Close button */}
+        <button onClick={onClose} className="absolute top-3 right-3 text-gray-500 hover:text-black">
           <FaTimes size={20} />
         </button>
 
-        {/* 🔥 Header */}
-        
-        <p className="text-center mb-4 text-gray-600">
+        {/* Header */}
+        <h2 className="text-xl font-bold mb-2 text-center">{course.title}</h2>
+        <p className="text-center text-gray-600 mb-4">
           Enroll for <span className="text-blue-600 font-semibold">${course.price}</span>
         </p>
 
-        {/* 💳 Payment Methods */}
-        <div className="space-y-3 text-sm text-gray-800">
+        {/* Payment options */}
+        <div className="space-y-3 text-sm">
           <div className="bg-gray-100 p-3 rounded">
             <div className="flex items-center gap-2 font-semibold mb-1">
               <FaBitcoin className="text-yellow-500" />
-              Bitcoin / USDT (Preferred)
+              Bitcoin / USDT
             </div>
-            <p><b>BTC Address:</b> 1FfmbHfnpaZjKFvyi1okTjJJusN455paPH</p>
+            <p><b>BTC:</b> 1FfmbHfnpaZjKFvyi1okTjJJusN455paPH</p>
             <p><b>Binance Tag:</b> elshadaipay</p>
           </div>
 
@@ -62,23 +59,24 @@ export default function PaymentModal({ course, onCancel }) {
           </div>
         </div>
 
-        {/* 📤 Upload Proof */}
+        {/* File Upload */}
         <div className="mt-4">
           <label className="block text-sm font-medium mb-1">Upload Payment Proof</label>
           <input
             type="file"
             accept="image/*,application/pdf"
             onChange={(e) => setProof(e.target.files[0])}
-            className="border p-2 rounded w-full text-sm"
+            className="border p-2 w-full rounded"
           />
         </div>
 
-        {/* ✅ Submit Button */}
+        {/* Submit Button */}
         <button
-          onClick={handleProofUpload}
-          className="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold w-full py-2 rounded flex items-center justify-center gap-2"
+          onClick={handleSubmit}
+          className="mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 w-full rounded flex justify-center items-center gap-2"
         >
-          <FaUpload /> Submit Proof
+          <FaUpload />
+          Submit Proof
         </button>
       </div>
     </div>
