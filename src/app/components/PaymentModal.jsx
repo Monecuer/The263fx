@@ -1,14 +1,23 @@
 'use client';
 
-import { FaBitcoin, FaTimes, FaUpload, FaMoneyBillWave } from 'react-icons/fa';
+import { FaBitcoin, FaTimes, FaWhatsapp } from 'react-icons/fa';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function PaymentModal({ course, onCancel }) {
   const [proof, setProof] = useState(null);
 
-  const handleProofUpload = () => {
-    if (!proof) return alert('❗ Please select a payment proof file.');
-    alert('✅ Proof submitted successfully! We will verify and contact you.');
+  const handleWhatsAppSubmit = () => {
+    if (!proof) {
+      alert('❗ Please select a payment proof file first.');
+      return;
+    }
+
+    const phoneNumber = '263775007225';
+    const message = `Hello, I have paid for the course "${course.title}" worth $${course.price}. Please find the proof attached.`;
+
+    // Open WhatsApp Web or mobile
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
     onCancel();
   };
 
@@ -33,31 +42,33 @@ export default function PaymentModal({ course, onCancel }) {
           {/* EcoCash */}
           <div className="bg-green-100 p-3 rounded">
             <div className="flex items-center gap-2 mb-1 text-green-700 font-semibold">
-              <FaMoneyBillWave /> EcoCash
+              <Image src="/logo/ecocash.png" width={24} height={24} alt="EcoCash" />
+              EcoCash
             </div>
             <p className="text-sm text-gray-800">
-              Send to <strong>0772 123 456</strong> (Elshadai Pay)
+              Send to <strong>0776543537</strong> (Ronald Muromo)
             </p>
           </div>
 
           {/* Inbucks */}
           <div className="bg-indigo-100 p-3 rounded">
             <div className="flex items-center gap-2 mb-1 text-indigo-700 font-semibold">
-              <FaMoneyBillWave /> Inbucks
+              <Image src="/logo/inbucks.png" width={24} height={24} alt="Inbucks" />
+              Inbucks
             </div>
             <p className="text-sm text-gray-800">
-              Send to <strong>0782 987 654</strong> (Elshadai Pay)
+              Send to <strong>0776543537</strong> (Ronald Muromo)
             </p>
           </div>
 
-          {/* Bitcoin / Binance */}
+          {/* Binance */}
           <div className="bg-yellow-100 p-3 rounded">
             <div className="flex items-center gap-2 mb-1 text-yellow-700 font-semibold">
-              <FaBitcoin /> Bitcoin / USDT
+              <Image src="/logo/binance.png" width={24} height={24} alt="Binance" />
+              Binance / USDT
             </div>
             <p className="text-sm">
-              <b>BTC Address:</b> 1FfmbHfnpaZjKFvyi1okTjJJusN455paPH<br />
-              <b>Binance Tag:</b> elshadaipay
+              <b>Wallet:</b> 0x49234125183846fa812f2d9d13848055da860f21
             </p>
           </div>
         </div>
@@ -76,10 +87,10 @@ export default function PaymentModal({ course, onCancel }) {
         </div>
 
         <button
-          onClick={handleProofUpload}
+          onClick={handleWhatsAppSubmit}
           className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 w-full rounded flex items-center justify-center gap-2"
         >
-          <FaUpload /> Submit Proof
+          <FaWhatsapp /> Submit via WhatsApp
         </button>
       </div>
     </div>
