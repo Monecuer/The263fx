@@ -123,4 +123,4 @@ export default function PaymentModal({ course, onCancel }) {
     </div>
   );
 }
-}
+
