@@ -42,7 +42,7 @@ export default function PaymentModal({ course, onCancel }) {
           {/* EcoCash */}
           <div className="bg-green-100 p-3 rounded">
             <div className="flex items-center gap-2 mb-1 text-green-700 font-semibold">
-              <Image src="/logo/ecocash__zoom-1.png" width={24} height={24} alt="EcoCash" />
+              <Image src="/icons/ecocash__zoom-1.png" width={24} height={24} alt="EcoCash" />
               EcoCash
             </div>
             <p className="text-sm text-gray-800">
@@ -53,7 +53,7 @@ export default function PaymentModal({ course, onCancel }) {
           {/* Inbucks */}
           <div className="bg-indigo-100 p-3 rounded">
             <div className="flex items-center gap-2 mb-1 text-indigo-700 font-semibold">
-              <Image src="/logo/inbucks.png" width={24} height={24} alt="Inbucks" />
+              <Image src="/icons/inbucks.png" width={24} height={24} alt="Inbucks" />
               Inbucks
             </div>
             <p className="text-sm text-gray-800">
@@ -64,7 +64,7 @@ export default function PaymentModal({ course, onCancel }) {
           {/* Binance */}
           <div className="bg-yellow-100 p-3 rounded">
             <div className="flex items-center gap-2 mb-1 text-yellow-700 font-semibold">
-              <Image src="/logo/binance.png" width={24} height={24} alt="Binance" />
+              <Image src="/icons/binance.png" width={24} height={24} alt="Binance" />
               Binance / USDT
             </div>
             <p className="text-sm">
