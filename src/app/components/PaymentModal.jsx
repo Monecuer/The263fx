@@ -1,15 +1,14 @@
 import {
   FaBitcoin,
-  FaQrcode,
   FaTimes,
   FaUpload,
-  FaMoneyBillWave
 } from 'react-icons/fa';
 import { useState } from 'react';
-import { SiEcocash, SiBinance } from 'react-icons/si';
+import { SiEcocash } from 'react-icons/si';
 import { GiReceiveMoney } from 'react-icons/gi';
 
-export default function PaymentModal({ course, onCancel }) {
+export default function PaymentModal({ course = {}, onCancel }) {
+  const { title = 'Course', price = '0.00' } = course;
   const [proof, setProof] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +21,7 @@ export default function PaymentModal({ course, onCancel }) {
     setTimeout(() => {
       setIsLoading(false);
       alert('✅ Payment proof submitted! We will verify it shortly.');
-      onCancel();
+      onCancel?.();
     }, 2000);
   };
 
@@ -36,10 +35,10 @@ export default function PaymentModal({ course, onCancel }) {
           <FaTimes size={20} />
         </button>
 
-        <h2 className="text-2xl font-bold mb-4 text-center">{course.title}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">{title}</h2>
         <p className="mb-4 text-gray-700 text-center">
-          You're enrolling in <strong>{course.title}</strong> for{' '}
-          <span className="text-blue-600 font-semibold">${course.price}</span>
+          You're enrolling in <strong>{title}</strong> for{' '}
+          <span className="text-blue-600 font-semibold">${price}</span>
         </p>
 
         <div className="space-y-4 text-sm">
@@ -80,14 +79,18 @@ export default function PaymentModal({ course, onCancel }) {
             type="file"
             accept="image/*,application/pdf"
             onChange={(e) => setProof(e.target.files[0])}
-            className="border w-full p-2 rounded text-sm"
+            disabled={isLoading}
+            className="border w-full p-2 rounded text-sm disabled:bg-gray-100"
           />
+          {proof && (
+            <p className="text-xs mt-1 text-gray-600">Selected: {proof.name}</p>
+          )}
         </div>
 
         <button
           onClick={handleProofUpload}
           disabled={isLoading}
-          className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 w-full rounded flex items-center justify-center gap-2"
+          className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 w-full rounded flex items-center justify-center gap-2 disabled:opacity-50"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
@@ -104,12 +107,12 @@ export default function PaymentModal({ course, onCancel }) {
                   r="10"
                   stroke="currentColor"
                   strokeWidth="4"
-                ></circle>
+                />
                 <path
                   className="opacity-75"
                   fill="currentColor"
                   d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
-                ></path>
+                />
               </svg>
               Submitting...
             </span>
@@ -123,4 +126,3 @@ export default function PaymentModal({ course, onCancel }) {
     </div>
   );
 }
-
