@@ -42,7 +42,7 @@ export default function PaymentModal({ course, onCancel }) {
           {/* EcoCash */}
           <div className="bg-green-100 p-3 rounded">
             <div className="flex items-center gap-2 mb-1 text-green-700 font-semibold">
-              <Image src="/logo/ecocash.png" width={24} height={24} alt="EcoCash" />
+              <Image src="/logo/ecocash__zoom-1.png" width={24} height={24} alt="EcoCash" />
               EcoCash
             </div>
             <p className="text-sm text-gray-800">
