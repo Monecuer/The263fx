@@ -28,7 +28,7 @@ export default function PaymentModal({ course, onCancel }) {
         </button>
 
         {/* 🔥 Header */}
-        <h2 className="text-2xl font-bold mb-2 text-center">{course.title}</h2>
+        
         <p className="text-center mb-4 text-gray-600">
           Enroll for <span className="text-blue-600 font-semibold">${course.price}</span>
         </p>
