@@ -1,100 +1,212 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaCopy } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '../lib/supabaseClient';
+import PaymentModal from '../components/PaymentModal';
+import { motion } from 'framer-motion';
+import {
+  FaPlayCircle,
+  FaCreditCard,
+  FaChalkboardTeacher,
+  FaClock,
+  FaUserGraduate,
+  FaBrain,
+  FaStar,
+} from 'react-icons/fa';
 
-export default function PaymentModal({ course, onCancel }) {
-  const [copied, setCopied] = useState(false);
+export default function CoursesSection() {
+  const router = useRouter();
+  const [showVideo, setShowVideo] = useState(false);
+  const [user, setUser] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText('0776543537');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+  }, []);
+
+  const handleJoin = (course) => {
+    if (!user) {
+      router.push('/login');
+    } else {
+      setSelectedCourse(course);
+    }
   };
 
-  if (!course) return null;
+  const courses = [
+    {
+      id: 'free-course',
+      title: 'Free Course',
+      icon: <FaChalkboardTeacher className="text-blue-400 text-xl" />,
+      badge: 'FREE',
+      price: 0,
+      priceLabel: 'Free',
+      duration: null,
+      color: 'bg-white/5',
+      border: 'border-white/10',
+      features: [
+        'Why you should trade',
+        'How trading benefits you',
+        'Why people lose money',
+      ],
+      action: !showVideo ? (
+        <button
+          onClick={() => setShowVideo(true)}
+          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+        >
+          <FaPlayCircle className="text-lg" /> Join Now
+        </button>
+      ) : (
+        <div className="aspect-video mt-4 rounded-lg overflow-hidden border border-gray-700">
+          <div className="w-full h-full bg-black flex items-center justify-center text-gray-500 text-sm italic">
+            Free Course Video Coming Soon
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'premium-1mo',
+      title: '1-Month Premium',
+      icon: <FaUserGraduate className="text-yellow-400 text-xl" />,
+      badge: '20% OFF',
+      price: 48,
+      priceLabel: '$48 (Was $60)',
+      duration: '1 Month',
+      color: 'bg-white/5',
+      border: 'border-yellow-400/20',
+      features: [
+        'Includes Free Course',
+        'Intro to Markets',
+        'Winning Strategy',
+        'Open Account & Demo',
+        'Trade Real Account',
+      ],
+    },
+    {
+      id: 'mastery-3mo',
+      title: '3-Month Mastery',
+      icon: <FaBrain className="text-purple-400 text-xl" />,
+      badge: '36% OFF',
+      price: 96,
+      priceLabel: '$96 (Was $150)',
+      duration: '3 Months',
+      color: 'bg-white/5',
+      border: 'border-purple-400/20',
+      features: [
+        'Includes Previous Course',
+        'Mindset & Psychology',
+        'Fundamental Analysis',
+        'Technical Analysis',
+        'Trade with Us',
+        'Prop Firm Trading',
+      ],
+    },
+    {
+      id: 'elite-lifetime',
+      title: 'Lifetime Elite Access',
+      icon: <FaStar className="text-yellow-500 text-xl" />,
+      badge: '50% OFF',
+      price: 375,
+      priceLabel: '$375 (Was $750)',
+      duration: 'Lifetime',
+      color: 'bg-white/5',
+      border: 'border-yellow-500/20',
+      features: [
+        'Covers All Courses',
+        'Advanced Strategy Creation',
+        'Trade Signals Free',
+        'Become a Pro',
+        'Get Funded $10K',
+      ],
+    },
+  ];
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+    <section className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white py-16 px-6 max-w-7xl mx-auto space-y-16">
+      {/* Header */}
+      <div className="text-center">
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold mb-4 text-blue-400"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          The263Fx Course Plans
+        </motion.h2>
+        <motion.p
+          className="text-gray-400 text-md max-w-xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          Transform your trading with structured programs designed for success.
+        </motion.p>
+      </div>
+
+      {/* Course Cards */}
+      <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
+        {courses.map((course, i) => (
+          <motion.div
+            key={course.id}
+            className={`${course.color} ${course.border} p-6 rounded-2xl shadow-lg backdrop-blur-md space-y-4`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+          >
+            <div className="flex items-center gap-3">
+              {course.icon}
+              <h3 className="text-xl font-semibold text-white">{course.title}</h3>
+              <span className="ml-auto bg-white/10 text-xs px-3 py-1 rounded-full">
+                {course.badge}
+              </span>
+            </div>
+            <p className="text-gray-400 text-sm italic">{course.priceLabel}</p>
+
+            <ul className="text-gray-300 text-sm space-y-1 pl-4 list-disc">
+              {course.features.map((f, idx) => (
+                <li key={idx}>{f}</li>
+              ))}
+            </ul>
+
+            {course.duration && (
+              <div className="text-sm text-gray-400 flex items-center gap-2 mt-2">
+                <FaClock className="text-yellow-400" />
+                Duration: <span className="text-white font-semibold">{course.duration}</span>
+              </div>
+            )}
+
+            {course.id === 'free-course' ? (
+              course.action
+            ) : (
+              <button
+                onClick={() => handleJoin(course)}
+                className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-black w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+              >
+                <FaCreditCard className="text-lg" /> Enroll Now
+              </button>
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Footer Text */}
+      <motion.p
+        className="text-center text-gray-500 italic text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        transition={{ delay: 0.3 }}
       >
-        <motion.div
-          className="bg-gray-900 rounded-2xl p-6 w-[90%] max-w-md text-white shadow-2xl relative"
-          initial={{ scale: 0.8, y: 50 }}
-          animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.8, opacity: 0 }}
-        >
-          {/* Close button */}
-          <button
-            onClick={onCancel}
-            className="absolute top-4 right-4 text-gray-400 hover:text-white"
-          >
-            <FaTimes size={18} />
-          </button>
+        After payment, you'll get mentorship and exclusive content access.
+      </motion.p>
 
-          <h2 className="text-2xl font-bold mb-2 text-yellow-400">
-            {course.title}
-          </h2>
-          <p className="text-sm text-gray-400 mb-4">
-            Price: <span className="text-white font-semibold">${course.price}</span>
-          </p>
-
-          <h3 className="text-md font-semibold mb-2 text-white">
-            Pay via:
-          </h3>
-          <div className="flex items-center justify-start gap-4 mb-4">
-            <div className="flex flex-col items-center">
-              <img src="/ecocash.png" alt="Ecocash" className="w-10 h-10" />
-              <p className="text-xs text-gray-300 mt-1">Ecocash</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src="/inbucks.png" alt="Inbucks" className="w-10 h-10" />
-              <p className="text-xs text-gray-300 mt-1">Inbucks</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src="/binance.png" alt="Binance" className="w-10 h-10" />
-              <p className="text-xs text-gray-300 mt-1">Binance</p>
-            </div>
-          </div>
-
-          <div className="mt-4 text-sm text-gray-300 text-center">
-            <p className="mb-1">Send to:</p>
-            <div className="flex items-center justify-center gap-2">
-              <span className="font-semibold text-yellow-400 text-lg">0776543537</span>
-              <button
-                onClick={handleCopy}
-                className="text-sm bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded"
-              >
-                {copied ? 'Copied!' : <FaCopy />}
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-6 flex justify-between gap-4">
-            <button
-              onClick={onCancel}
-              className="w-1/2 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => {
-                // TODO: handle actual payment confirmation
-                alert(`Payment confirmed for ${course.title}`);
-                onCancel();
-              }}
-              className="w-1/2 py-2 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg"
-            >
-              Confirm
-            </button>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+      {/* Modal */}
+      {selectedCourse && (
+        <PaymentModal
+          course={selectedCourse}
+          onCancel={() => setSelectedCourse(null)}
+        />
+      )}
+    </section>
   );
 }
