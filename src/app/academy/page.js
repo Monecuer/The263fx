@@ -7,7 +7,6 @@ import PaymentModal from '../components/PaymentModal';
 import { motion } from 'framer-motion';
 import {
   FaPlayCircle,
-  FaLock,
   FaCreditCard,
   FaChalkboardTeacher,
   FaClock,
@@ -63,7 +62,7 @@ export default function CoursesSection() {
       ) : (
         <div className="aspect-video mt-4 rounded-lg overflow-hidden border border-gray-700">
           <div className="w-full h-full bg-black flex items-center justify-center text-gray-600 text-sm italic">
-              Free Course Video Coming Soon
+            Free Course Video Coming Soon
           </div>
         </div>
       ),
@@ -172,7 +171,8 @@ export default function CoursesSection() {
             {course.duration && (
               <div className="text-sm text-gray-400 flex items-center gap-2 mt-2">
                 <FaClock className="text-yellow-400" />
-                Duration: <span className="text-white font-semibold">{course.duration}</span>
+                Duration:{' '}
+                <span className="text-white font-semibold">{course.duration}</span>
               </div>
             )}
 
@@ -190,15 +190,71 @@ export default function CoursesSection() {
         ))}
       </div>
 
+      {/* Payment Note */}
       <motion.p
         className="text-center text-gray-500 italic text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-         After payment, you'll get mentorship, and exclusive content.
+        After payment, you'll get mentorship and exclusive content.
       </motion.p>
 
+      {/* Payment Details */}
+      <motion.div
+        className="text-center space-y-4 mt-10"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <h3 className="text-2xl font-semibold text-white">Payment Methods</h3>
+        <p className="text-gray-400">Use any of the following to make payment:</p>
+
+        <div className="flex flex-wrap justify-center gap-6 mt-4">
+          <motion.div
+            className="flex flex-col items-center"
+            whileHover={{ scale: 1.1 }}
+          >
+            <img
+              src="/ecocash.png"
+              alt="Ecocash"
+              className="w-12 h-12 object-contain"
+            />
+            <p className="text-white text-sm mt-2">Ecocash</p>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col items-center"
+            whileHover={{ scale: 1.1 }}
+          >
+            <img
+              src="/inbucks.png"
+              alt="Inbucks"
+              className="w-12 h-12 object-contain"
+            />
+            <p className="text-white text-sm mt-2">Inbucks</p>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col items-center"
+            whileHover={{ scale: 1.1 }}
+          >
+            <img
+              src="/binance.png"
+              alt="Binance"
+              className="w-12 h-12 object-contain"
+            />
+            <p className="text-white text-sm mt-2">Binance</p>
+          </motion.div>
+        </div>
+
+        <div className="mt-4 text-gray-300">
+          <p>Send to:</p>
+          <p className="font-bold text-xl text-yellow-400">0776543537</p>
+        </div>
+      </motion.div>
+
+      {/* Modal */}
       {selectedCourse && (
         <PaymentModal
           course={selectedCourse}
