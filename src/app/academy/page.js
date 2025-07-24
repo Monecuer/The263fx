@@ -20,12 +20,39 @@ export default function CoursesSection() {
   const [showVideo, setShowVideo] = useState(false);
   const [user, setUser] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
     });
   }, []);
+
+  // Countdown to 19 August 2025
+  useEffect(() => {
+    const countdownDate = new Date('2025-08-19T00:00:00Z').getTime();
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const diff = countdownDate - now;
+
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        clearInterval(interval);
+      } else {
+        setTimeLeft({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((diff / 1000 / 60) % 60),
+          seconds: Math.floor((diff / 1000) % 60),
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (t) => t.toString().padStart(2, '0');
 
   const handleJoin = (course) => {
     if (!user) {
@@ -149,11 +176,24 @@ export default function CoursesSection() {
         {courses.map((course, i) => (
           <motion.div
             key={course.id}
-            className={`${course.color} ${course.border} p-6 rounded-2xl shadow-lg backdrop-blur-md space-y-4`}
+            className={`${course.color} ${course.border} p-6 rounded-2xl shadow-lg backdrop-blur-md space-y-4 relative overflow-hidden`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
           >
+            {/* Glitter */}
+            <div className="absolute top-1 left-1 animate-pulse text-yellow-300 text-xs">✨</div>
+            <div className="absolute top-1 right-2 animate-ping text-yellow-400 text-xs">✨</div>
+
+            {/* Countdown */}
+            <div className="text-yellow-400 font-bold text-center flex items-center justify-center gap-2">
+              <FaClock className="text-lg" />
+              <span>
+                Starts in: {formatTime(timeLeft.days)}d : {formatTime(timeLeft.hours)}h :{' '}
+                {formatTime(timeLeft.minutes)}m : {formatTime(timeLeft.seconds)}s
+              </span>
+            </div>
+
             <div className="flex items-center gap-3">
               {course.icon}
               <h3 className="text-xl font-semibold text-white">{course.title}</h3>
