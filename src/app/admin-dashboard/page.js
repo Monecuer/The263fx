@@ -3,7 +3,16 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { sendBulkEmail } from '../../utils/sendBulkEmail';
-import { FaUser, FaUsers, FaBell, FaEdit, FaSave, FaTimes, FaEnvelope } from 'react-icons/fa';
+import {
+  FaUser,
+  FaUsers,
+  FaBell,
+  FaEdit,
+  FaSave,
+  FaTimes,
+  FaEnvelope,
+  FaSmileBeam,
+} from 'react-icons/fa';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -13,30 +22,26 @@ export default function AdminDashboard() {
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [userCount, setUserCount] = useState(0);
+  const [displayCount, setDisplayCount] = useState(0);
   const [recentUsers, setRecentUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [emailStatus, setEmailStatus] = useState('');
 
-  // Get current user
   useEffect(() => {
-    const getUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
+    supabase.auth.getUser().then(({ data, error }) => {
       if (error) {
-        console.error("Error getting user:", error.message);
+        console.error("Auth Error:", error.message);
         setError("❌ Failed to get user.");
       } else {
         setUser(data.user);
       }
-    };
-    getUser();
+    });
   }, []);
 
-  // Fetch profile info
   useEffect(() => {
     const fetchProfile = async () => {
       if (!user?.id) return;
-
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -44,19 +49,17 @@ export default function AdminDashboard() {
         .single();
 
       if (error) {
-        console.error("Error fetching profile:", error.message);
+        console.error("Profile Error:", error.message);
         setError("⚠️ Failed to load profile.");
-      } else if (data) {
+      } else {
         setProfile(data);
-        setName(data.full_name || '');
+        setName(data.name || '');
         setBio(data.bio || '');
       }
     };
-
     fetchProfile();
   }, [user]);
 
-  // Save profile updates
   const saveProfile = async () => {
     if (!user?.id) return;
 
@@ -64,7 +67,7 @@ export default function AdminDashboard() {
 
     const updates = {
       id: user.id,
-      name: name,
+      name,
       bio,
       updated_at: new Date().toISOString(),
     };
@@ -73,7 +76,7 @@ export default function AdminDashboard() {
     setSaving(false);
 
     if (error) {
-      console.error("Error saving profile:", error.message);
+      console.error("Save Error:", error.message);
       alert('❌ Failed to save profile.');
     } else {
       alert('✅ Profile updated!');
@@ -82,46 +85,44 @@ export default function AdminDashboard() {
     }
   };
 
-  // Fetch admin data
   const fetchAdminData = async () => {
     try {
-      const { data: latest, error: fetchError } = await supabase
+      const { data: latest } = await supabase
         .from('profiles')
-        .select('id, email,name, created_at')
+        .select('id, email, name, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
 
-      if (fetchError) throw fetchError;
-
-      const { count, error: countError } = await supabase
+      const { count } = await supabase
         .from('profiles')
         .select('id', { count: 'exact', head: true });
 
-      if (countError) throw countError;
-
       return { count: count ?? 0, latest: latest ?? [] };
     } catch (err) {
-      console.error("Admin data error:", err.message);
+      console.error("Admin Data Error:", err.message);
       throw err;
     }
   };
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const { count, latest } = await fetchAdminData();
+    fetchAdminData()
+      .then(({ count, latest }) => {
         setUserCount(count);
         setRecentUsers(latest);
-      } catch {
-        setError('⚠️ Could not load user data.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    getData();
+        let current = 0;
+        const interval = setInterval(() => {
+          current += Math.ceil(count / 30);
+          if (current >= count) {
+            current = count;
+            clearInterval(interval);
+          }
+          setDisplayCount(current);
+        }, 50);
+      })
+      .catch(() => setError('⚠️ Could not load user data.'))
+      .finally(() => setLoading(false));
   }, []);
 
-  // Send bulk email
   const sendEmailToAll = async () => {
     setEmailStatus('Sending...');
     try {
@@ -129,45 +130,57 @@ export default function AdminDashboard() {
         const displayName = u.name || u.email;
         await sendBulkEmail(displayName, "📢 Hello from The263Fx Admin! Stay tuned for updates.");
       }
-      setEmailStatus('✅ Emails sent to all users!');
+      setEmailStatus('✅ Emails sent!');
     } catch (err) {
-      console.error("Email error:", err.message);
+      console.error("Email Error:", err.message);
       setEmailStatus('❌ Failed to send emails.');
     }
-    setTimeout(() => setEmailStatus(''), 5000);
+    setTimeout(() => setEmailStatus(''), 4000);
   };
 
   if (loading) {
-    return <div className="p-6 text-white bg-gray-900">🔄 Loading dashboard...</div>;
-  }
-
-  if (error) {
     return (
-      <div className="p-6 bg-gray-900 text-white">
-        <p className="text-red-500">{error}</p>
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-black to-gray-900 text-white">
+        <div className="flex flex-col items-center gap-4 animate-fadeIn">
+          <FaSmileBeam className="text-yellow-300 text-5xl animate-bounce" />
+          <div className="w-14 h-14 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-yellow-200 font-mono text-sm">Welcome  Admin ...</p>
+        </div>
       </div>
     );
   }
 
-  return (
-    <div className="p-6 min-h-screen bg-gray-900 text-white">
-      <h1 className="text-4xl font-bold mb-8 flex items-center gap-2"><FaUser /> Admin Dashboard</h1>
+  if (error)
+    return (
+      <div className="p-6 bg-gray-900 text-red-500">{error}</div>
+    );
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="p-6 bg-gray-800 rounded-lg shadow">
-          <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaUsers /> Total Users</h2>
-          <p className="text-5xl font-bold text-green-400">{userCount}</p>
+  return (
+    <div className="p-6 min-h-screen bg-gradient-to-b from-black to-gray-900 text-white space-y-12">
+      <h1 className="text-4xl font-bold flex items-center gap-3 text-blue-400">
+        <FaUser className="text-3xl" /> Admin Dashboard
+      </h1>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+          <h2 className="text-xl font-semibold flex items-center gap-2 text-yellow-300 mb-4">
+            <FaUsers /> Total Users
+          </h2>
+          <p className="text-5xl font-bold text-green-400 transition-all duration-500">{displayCount}</p>
         </div>
 
-        <div className="p-6 bg-gray-800 rounded-lg shadow">
-          <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaUser /> Recent Signups</h2>
+        <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+          <h2 className="text-xl font-semibold flex items-center gap-2 text-yellow-300 mb-4">
+            <FaUser /> Recent Signups
+          </h2>
           {!recentUsers.length ? (
-            <p>No recent users</p>
+            <p className="text-gray-400">No recent users.</p>
           ) : (
-            <ul className="space-y-2">
+            <ul className="divide-y divide-gray-700">
               {recentUsers.map((u) => (
-                <li key={u.id} className="flex justify-between text-sm">
-                  <span>{u.full_name || u.email}</span>
+                <li key={u.id} className="py-2 flex justify-between text-sm">
+                  <span>{u.name || u.email}</span>
                   <span className="text-gray-400">{new Date(u.created_at).toLocaleDateString()}</span>
                 </li>
               ))}
@@ -176,15 +189,19 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="p-6 bg-gray-800 rounded-lg shadow mb-8">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaUser /> Your Profile</h2>
+      {/* Profile Section */}
+      <div className="bg-gray-800 rounded-xl p-6 shadow-lg space-y-4">
+        <h2 className="text-xl font-semibold flex items-center gap-2 text-blue-400">
+          <FaUser /> Your Profile
+        </h2>
+
         {!editingProfile ? (
           <div>
             <p><strong>Name:</strong> {profile?.name || 'Not set'}</p>
             <p><strong>Bio:</strong> {profile?.bio || 'No bio provided'}</p>
             <button
               onClick={() => setEditingProfile(true)}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2"
+              className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2 text-sm"
             >
               <FaEdit /> Edit Profile
             </button>
@@ -193,14 +210,14 @@ export default function AdminDashboard() {
           <div className="space-y-4">
             <input
               type="text"
-              placeholder="Your name"
               className="w-full p-2 rounded bg-white/10 border border-gray-600 text-white"
+              placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <textarea
-              placeholder="Your bio"
               className="w-full p-2 rounded bg-white/10 border border-gray-600 text-white"
+              placeholder="Short bio"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
             />
@@ -208,13 +225,13 @@ export default function AdminDashboard() {
               <button
                 onClick={saveProfile}
                 disabled={saving}
-                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded flex items-center gap-2"
+                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded flex items-center gap-2 text-sm"
               >
                 <FaSave /> {saving ? 'Saving...' : 'Save'}
               </button>
               <button
                 onClick={() => setEditingProfile(false)}
-                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded flex items-center gap-2"
+                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded flex items-center gap-2 text-sm"
               >
                 <FaTimes /> Cancel
               </button>
@@ -223,15 +240,20 @@ export default function AdminDashboard() {
         )}
       </div>
 
-      <div className="p-6 bg-gray-800 rounded-lg shadow">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><FaBell /> Notifications</h2>
+      {/* Email Broadcast */}
+      <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h2 className="text-xl font-semibold flex items-center gap-2 text-purple-400 mb-4">
+          <FaBell /> Notifications
+        </h2>
         <button
           onClick={sendEmailToAll}
-          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2"
+          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2 text-sm"
         >
           <FaEnvelope /> Send Email to All Users
         </button>
-        {emailStatus && <p className="mt-2 text-green-400">{emailStatus}</p>}
+        {emailStatus && (
+          <p className="mt-3 text-green-400 text-sm italic">{emailStatus}</p>
+        )}
       </div>
     </div>
   );
