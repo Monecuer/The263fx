@@ -45,7 +45,7 @@ const tiers = [
       'Demo → Real transition',
       'Includes Starter',
     ],
-    href: 'https://wa.me/263787260086?text=I%20want%201-Month%20Premium',
+    href: 'https://wa.me/263782286544?text=I%20want%201-Month%20Premium',
     cta: 'Enroll (WhatsApp)',
   },
   {
@@ -62,7 +62,7 @@ const tiers = [
       'Trade With Us',
       'Prop Firm Prep',
     ],
-    href: 'https://wa.me/263787260086?text=I%20want%203-Month%20Mastery',
+    href: 'https://wa.me/263782286544?text=I%20want%203-Month%20Mastery',
     cta: 'Enroll (WhatsApp)',
   },
   {
@@ -79,7 +79,7 @@ const tiers = [
       'Signals Included',
       'Get Funded ($10k)',
     ],
-    href: 'https://wa.me/263787260086?text=I%20want%20Lifetime%20Elite',
+    href: 'https://wa.me/263782286544?text=I%20want%20Lifetime%20Elite',
     cta: 'Enroll (WhatsApp)',
   },
 ];
@@ -137,7 +137,7 @@ export default function AcademyPage() {
           <Badge text="Mastercard" />
           <span className="text-white/50">|</span>
           <a
-            href="https://wa.me/263787260086?text=Hi%20The263Fx%2C%20I%20want%20to%20enroll."
+            href="https://wa.me/263782286544?text=Hi%20The263Fx%2C%20I%20want%20to%20enroll."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700"
