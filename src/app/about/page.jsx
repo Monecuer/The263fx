@@ -38,7 +38,7 @@ export default function AboutPage() {
               <Outbound href="https://www.myfxbook.com/members/The263Fx">
                 <FaChartLine /> Myfxbook Stats
               </Outbound>
-              <Outbound href="https://wa.me/263787260086?text=Hi%20The263Fx%2C%20I%20want%20to%20talk.">
+              <Outbound href="https://wa.me/263782286544?text=Hi%20The263Fx%2C%20I%20want%20to%20talk.">
                 <FaHandshake /> Chat on WhatsApp
               </Outbound>
             </motion.div>
