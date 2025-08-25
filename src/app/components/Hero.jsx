@@ -69,7 +69,7 @@ export default function Hero() {
             </a>
 
             <a
-              href="https://wa.me/263787260086?text=Hi%20The263Fx%2C%20I%20want%20to%20start%20Copy%20Trading."
+              href="https://wa.me/263782286544?text=Hi%20The263Fx%2C%20I%20want%20to%20start%20Copy%20Trading."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-white/30 hover:bg-white/10 text-white px-6 py-3 rounded-xl font-semibold transition"
@@ -118,7 +118,7 @@ export default function Hero() {
       {/* Optional quick links bar */}
       <section className="bg-gray-950 text-gray-300 text-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-3 items-center justify-center">
-          <a href="https://the263fx.netlify.app/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 underline">
+          <a href="https://the263fx.com/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 underline">
             
           </a>
           <span></span>
