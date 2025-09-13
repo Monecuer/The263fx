@@ -1,4 +1,4 @@
-'use client';
+\'use client';
 import { motion } from 'framer-motion';
 import {
   FaBookOpen, FaSignal, FaHandshake,
@@ -54,6 +54,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
           >
+            {/* Academy Button */}
             <a
               href="/academy"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition-transform transform hover:scale-105"
@@ -61,15 +62,19 @@ export default function Hero() {
               <FaBookOpen /> Join The Academy
             </a>
 
+            {/* Subscribe to Signals -> WhatsApp */}
             <a
-              href="/signals"
+              href="https://wa.me/263775001909?text=Hi%20The263Fx%2C%20I%20want%20to%20subscribe%20to%20Signals."
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-white/30 hover:bg-white/10 text-white px-6 py-3 rounded-xl font-semibold transition"
             >
               <FaSignal /> Subscribe to Signals
             </a>
 
+            {/* Copy Trading -> WhatsApp */}
             <a
-              href="https://wa.me/263782286544?text=Hi%20The263Fx%2C%20I%20want%20to%20start%20Copy%20Trading."
+              href="https://wa.me/263775001909?text=Hi%20The263Fx%2C%20I%20want%20to%20start%20Copy%20Trading."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-white/30 hover:bg-white/10 text-white px-6 py-3 rounded-xl font-semibold transition"
@@ -146,3 +151,4 @@ function SocialIcon({ href, Icon }) {
     </a>
   );
 }
+
