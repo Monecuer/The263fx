@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   FaBars, FaTimes, FaHome, FaPenNib, FaGraduationCap,
-  FaChartLine, FaSignInAlt, FaUserPlus
+  FaChartLine
 } from 'react-icons/fa';
 
 export default function Navbar() {
@@ -38,18 +38,6 @@ export default function Navbar() {
           </Link>
           <Link href="/academy" className="hover:text-blue-400 flex items-center gap-1">
             <FaGraduationCap /> Academy
-          </Link>
-          <Link
-            href="/login"
-            className="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded transition flex items-center gap-1"
-          >
-            <FaSignInAlt /> Log In
-          </Link>
-          <Link
-            href="/signup"
-            className="border border-white hover:border-blue-400 hover:text-blue-400 px-4 py-1 rounded transition flex items-center gap-1"
-          >
-            <FaUserPlus /> Sign Up
           </Link>
         </div>
 
@@ -96,20 +84,6 @@ export default function Navbar() {
           className="flex items-center gap-2 hover:text-blue-400"
         >
           <FaGraduationCap /> Academy
-        </Link>
-        <Link
-          href="/login"
-          onClick={handleNavClick}
-          className="block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-center flex items-center justify-center gap-2"
-        >
-          <FaSignInAlt /> Log In
-        </Link>
-        <Link
-          href="/signup"
-          onClick={handleNavClick}
-          className="block border border-white hover:border-blue-400 hover:text-blue-400 px-4 py-2 rounded text-center flex items-center justify-center gap-2"
-        >
-          <FaUserPlus /> Sign Up
         </Link>
       </div>
     </nav>
