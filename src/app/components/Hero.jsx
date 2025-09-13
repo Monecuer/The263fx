@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
   FaBookOpen, FaSignal, FaHandshake,
   FaTwitter, FaFacebook, FaYoutube, FaTiktok, FaInstagram,
-  FaChartLine, FaUser
+  FaChartLine
 } from 'react-icons/fa';
 
 export default function Hero() {
@@ -76,15 +76,6 @@ export default function Hero() {
             >
               <FaHandshake /> Copy Trading
             </a>
-
-            {/* NEW: About page button */}
-            <a
-              href="/about"
-              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-6 py-3 rounded-xl font-semibold transition"
-              aria-label="About Rony"
-            >
-              <FaUser /> About Rony
-            </a>
           </motion.div>
 
           {/* 📈 Results (Myfxbook) */}
@@ -119,7 +110,6 @@ export default function Hero() {
       <section className="bg-gray-950 text-gray-300 text-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-3 items-center justify-center">
           <a href="https://the263fx.com/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 underline">
-            
           </a>
           <span></span>
           <a href="https://www.myfxbook.com/members/The263Fx/the263fx/11621107" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 underline">
